@@ -4,12 +4,13 @@
 class Configuration(object):
     # Configure your A2Billing database
     DATABASE = {
-        'name': 'a2billing_db',
+        'host': '159.65.17.220',
+        'name': 'mya2billing',
         'engine': 'peewee.MySQLDatabase',
-        'user': 'root',
-        'passwd': 'password',
+        'user': 'a2billinguser',
+        'passwd': 'a2billing',
     }
     DEBUG = True
     # Set the secret key.  keep this really secret
     # Default implementation stores all session data in a signed cookie. This requires that the secret_key is set
-    SECRET_KEY = 'THE_SECRET_KEY'
+    SECRET_KEY = 'Kr!5hang'
