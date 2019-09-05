@@ -9,7 +9,7 @@ from views import *
 
 admin.setup()
 api.setup()
-
+print "This web api service is up and running!"
 
 if __name__ == '__main__':
     auth.User.create_table(fail_silently=True)
