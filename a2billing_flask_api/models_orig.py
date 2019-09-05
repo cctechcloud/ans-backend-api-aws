@@ -2,18 +2,20 @@ from flask_peewee.db import Database
 from app import db
 
 
-# Configure your A2Billing database
-DATABASE = {
-    'name': 'a2billing_db',
-    'engine': 'peewee.MySQLDatabase',
-    'user': 'root',
-    'passwd': 'password',
-}
+    # Configure your A2Billing database
+    DATABASE = {
+        'host': '159.65.17.220',
+        'port'=3306,
+        'name': 'mya2billing',
+        'engine': 'peewee.MySQLDatabase',
+        'user': 'a2billinguser',
+        'passwd': 'a2billing',
+    }
 
 
 from peewee import *
 
-database = MySQLDatabase('a2billing_db', **{'password': 'password', 'user': 'root'})
+database = MySQLDatabase('mya2billing', **{'password': 'a2billing', 'user': 'a2billinguser'})
 
 
 class BaseModel(Model):

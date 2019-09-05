@@ -5,6 +5,7 @@ class Configuration(object):
     # Configure your A2Billing database
     DATABASE = {
         'host': '159.65.17.220',
+        'port'=3306,
         'name': 'mya2billing',
         'engine': 'peewee.MySQLDatabase',
         'user': 'a2billinguser',
