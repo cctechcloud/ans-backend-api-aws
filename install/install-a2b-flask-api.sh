@@ -130,6 +130,12 @@ func_install() {
     #python setup tools
     echo "Install dependencies and Python modules..."
     echo ""
+    apt-get -y install python-setuptools python-dev build-essential git-core mercurial gawk
+    easy_install pip
+    apt-get -y install libapache2-mod-python libapache2-mod-wsgi
+    apt-get -y install libmysqld-dev
+    apt-get -y install nginx supervisor
+    
     case $DIST in
         'DEBIAN')
             apt-get -y install python-setuptools python-dev build-essential git-core mercurial gawk
