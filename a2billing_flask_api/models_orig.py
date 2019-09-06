@@ -16,7 +16,7 @@ from app import db
 from peewee import *
 
 #database = MySQLDatabase('mya2billing', **{'password': 'a2billing', 'user': 'a2billinguser'})
-database = MySQLDatabase("mya2billing", host="159.65.17.220", port=3306, user="a2billinguser", passwd="a2billing")
+database = MySQLDatabase("mya2billing", host="159.65.17.220", port=3306, user="a2billinguser", password="a2billing")
 
 class BaseModel(Model):
     class Meta:
