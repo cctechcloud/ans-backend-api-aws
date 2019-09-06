@@ -14,4 +14,4 @@ class Configuration(object):
     DEBUG = True
     # Set the secret key.  keep this really secret
     # Default implementation stores all session data in a signed cookie. This requires that the secret_key is set
-    SECRET_KEY = 'Kr!5hang'
+    SECRET_KEY = 'cctechsecret'
