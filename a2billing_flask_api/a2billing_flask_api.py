@@ -27,7 +27,6 @@ api.setup()
 if __name__ == '__main__':
     print "Trying to create 'admin'!"
     auth.User.create_table(fail_silently=True)
-    Note.create_table(fail_silently=True)
     try:
         admin = auth.User(username='admin', email='', admin=True, active=True)
         admin.set_password('admin')
