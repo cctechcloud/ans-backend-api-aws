@@ -10,18 +10,18 @@ from views import *
 admin.setup()
 api.setup()
 
-@app.route('/status', methods=['GET', 'POST'])
-def status():
-  status =  "This web api service is up and running!"
-  return status
+#@app.route('/status', methods=['GET', 'POST'])
+#def status():
+ # status =  "This web api service is up and running!"
+  #return status
 
-@app.route('/addadmin', methods=['GET', 'POST'])
-def addadmin():
-  admin = auth.User(username='cctechadmin', email='cctechcloud@yahoo.com', admin=True, active=True)
-  admin.set_password('cctechpass')
-  admin.save()
-  status =  "admin user added!"
-  return status
+#@app.route('/addadmin', methods=['GET', 'POST'])
+#def addadmin():
+ # admin = auth.User(username='cctechadmin', email='cctechcloud@yahoo.com', admin=True, active=True)
+  #admin.set_password('cctechpass')
+  #admin.save()
+  #status =  "admin user added!"
+  #return status
 
 if __name__ == '__main__':
     #auth.User.create_table(fail_silently=True)

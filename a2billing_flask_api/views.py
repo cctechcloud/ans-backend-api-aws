@@ -9,7 +9,7 @@ import datetime
 
 
 def response_auth_failed():
-    return Response('Authentication failed', 401, {
+    return Response('Authentication failed for user', 401, {
         'WWW-Authenticate': 'Basic realm="Login Required"'
     })
 
