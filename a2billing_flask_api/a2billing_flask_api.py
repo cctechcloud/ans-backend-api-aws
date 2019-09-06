@@ -9,7 +9,11 @@ from views import *
 
 admin.setup()
 api.setup()
-print "This web api service is up and running!"
+
+@app.route('/status', methods=['GET', 'POST'])
+def status():
+  status =  "This web api service is up and running!"
+  return status
 
 if __name__ == '__main__':
     auth.User.create_table(fail_silently=True)
