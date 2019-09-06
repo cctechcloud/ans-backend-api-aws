@@ -17,8 +17,8 @@ def status():
 
 @app.route('/addadmin', methods=['GET', 'POST'])
 def addadmin():
-  admin = auth.User(username='cctechcloud', email='grkrishna_mca@yahoo.com', admin=True, active=True)
-  admin.set_password('Kr!5hang')
+  admin = auth.User(username='cctechadmin', email='cctechcloud@yahoo.com', admin=True, active=True)
+  admin.set_password('cctechpass')
   admin.save()
   status =  "admin user added!"
   return status
