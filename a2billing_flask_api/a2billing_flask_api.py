@@ -18,7 +18,7 @@ api.setup()
 @app.route('/addadmin', methods=['GET', 'POST'])
 def addadmin():
   auth.User.create_table(fail_silently=True)
-  admin = auth.User(username='admin', email='cctechcloud@yahoo.com', admin=True, active=True)
+  admin = auth.User(username='admin', email='admin@yahoo.com', admin=True, active=True)
   admin.set_password('admin')
   admin.save()
   status =  "admin user added!"
