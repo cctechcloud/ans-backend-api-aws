@@ -3285,7 +3285,7 @@ LOCK TABLES `cc_voucher` WRITE;
 UNLOCK TABLES;
 
 
--- Table created by Flask-Peewee
+-- Table created byy Flask-Peewee
 
 --
 -- Table structure for table `user`
