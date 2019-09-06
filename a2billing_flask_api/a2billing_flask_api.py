@@ -15,21 +15,22 @@ def status():
   status =  "This web api service is up and running!"
   return status
 
- app.route('/addadmin', methods=['GET', 'POST'])
- def addadmin():
-   admin = auth.User(username='rama', email='grkrishna_mca@yahoo.com', admin=True, active=True)
-   admin.set_password('Kr!5hang')
-   admin.save()
-   status =  "admin user added!"
-   return status
+@app.route('/addadmin', methods=['GET', 'POST'])
+def addadmin():
+  admin = auth.User(username='cctechcloud', email='grkrishna_mca@yahoo.com', admin=True, active=True)
+  admin.set_password('Kr!5hang')
+  admin.save()
+  status =  "admin user added!"
+  return status
 
 if __name__ == '__main__':
-    auth.User.create_table(fail_silently=True)
+    #auth.User.create_table(fail_silently=True)
     # Note.create_table(fail_silently=True)
     try:
-        admin = auth.User(username='admin', email='', admin=True, active=True)
-        admin.set_password('admin')
-        admin.save()
+        #admin = auth.User(username='admin', email='', admin=True, active=True)
+        #admin.set_password('admin')
+        #admin.save()
+        print "Trying to create User 'admin'!"
     except IntegrityError:
         print "User 'admin' already created!"
 
