@@ -7,7 +7,7 @@ from app import db
         'host': '159.65.17.220',
         'port': 3306,
         'name': 'mya2billing',
-        'engine': 'MyISAM',
+        'engine': 'peewee.MySQLDatabase',
         'user': 'a2billinguser',
         'passwd': 'a2billing',
     }
