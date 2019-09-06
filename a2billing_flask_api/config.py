@@ -7,7 +7,7 @@ class Configuration(object):
         'host': '159.65.17.220',
         'port': 3306,
         'name': 'mya2billing',
-        'engine': 'INNODB',
+        'engine': 'peewee.MySQLDatabase',
         'user': 'a2billinguser',
         'passwd': 'a2billing',
     }
