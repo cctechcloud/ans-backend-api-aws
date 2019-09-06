@@ -31,7 +31,7 @@ if __name__ == '__main__':
         #admin = auth.User(username='admin', email='', admin=True, active=True)
         #admin.set_password('admin')
         #admin.save()
-        print "Trying to create User 'admin'!"
+        print "Trying to create 'admin'!"
     except IntegrityError:
         print "User 'admin' already created!"
 
