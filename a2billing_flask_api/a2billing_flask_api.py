@@ -15,23 +15,24 @@ api.setup()
  # status =  "This web api service is up and running!"
   #return status
 
-@app.route('/addadmin', methods=['GET', 'POST'])
-def addadmin():
-  auth.User.create_table(fail_silently=True)
-  admin = auth.User(username='admin', email='admin@yahoo.com', admin=True, active=True)
-  admin.set_password('admin')
-  admin.save()
-  status =  "admin user added!"
-  return status
+#@app.route('/addadmin', methods=['GET', 'POST'])
+#def addadmin():
+  #auth.User.create_table(fail_silently=True)
+  #admin = auth.User(username='admin', email='admin@yahoo.com', admin=True, active=True)
+  #admin.set_password('admin')
+  #admin.save()
+  #status =  "admin user added!"
+  #return status
 
 if __name__ == '__main__':
-    #auth.User.create_table(fail_silently=True)
-    # Note.create_table(fail_silently=True)
+    print "Trying to create 'admin'!"
+    auth.User.create_table(fail_silently=True)
+    Note.create_table(fail_silently=True)
     try:
-        #admin = auth.User(username='admin', email='', admin=True, active=True)
-        #admin.set_password('admin')
-        #admin.save()
-        print "Trying to create 'admin'!"
+        admin = auth.User(username='admin', email='', admin=True, active=True)
+        admin.set_password('admin')
+        admin.save()
+        print "admin created!"
     except IntegrityError:
         print "User 'admin' already created!"
 

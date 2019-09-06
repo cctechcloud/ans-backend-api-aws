@@ -45,7 +45,7 @@ class DidDestinationAdmin(ModelAdmin):
     columns = ('destination', 'id_cc_card', 'id_cc_did', 'activated')
 
 
-admin = Admin(app, auth, branding='A2Billing API Admin Site')
+admin = Admin(app, auth, branding='API Admin Site')
 admin.register(Card, CardAdmin)
 admin.register(CardGroup, CardGroupAdmin)
 admin.register(Callerid, CalleridAdmin)
