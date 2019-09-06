@@ -1,7 +1,5 @@
 from flask import Flask
 from flask_peewee.db import Database
-from auth import auth
-
 
 app = Flask(__name__)
 app.config.from_object('config.Configuration')
