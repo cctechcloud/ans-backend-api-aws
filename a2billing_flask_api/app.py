@@ -1,6 +1,5 @@
 from flask import Flask
 from flask_peewee.db import Database
-from app import app
 from auth import auth
 # from flask import Blueprint, abort, request, Response, session, redirect, url_for, g
 from peewee import IntegrityError
@@ -30,5 +29,5 @@ if __name__ == '__main__':
     except IntegrityError:
         print "User 'admin' already created!"
 
-    app.debug = True
-    app.run(host='0.0.0.0', port=8008)
+app.debug = True
+app.run(host='0.0.0.0', port=8008)
