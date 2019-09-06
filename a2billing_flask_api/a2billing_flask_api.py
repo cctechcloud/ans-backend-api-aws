@@ -24,16 +24,15 @@ api.setup()
   #status =  "admin user added!"
   #return status
 
-if __name__ == '__main__':
-    print "Trying to create 'admin'!"
+print "Trying to create 'admin'!"
+try:
     auth.User.create_table(fail_silently=True)
-    try:
-        admin = auth.User(username='admin', email='', admin=True, active=True)
-        admin.set_password('admin')
-        admin.save()
-        print "admin created!"
-    except IntegrityError:
-        print "User 'admin' already created!"
+    admin = auth.User(username='admin', email='', admin=True, active=True)
+    admin.set_password('admin')
+    admin.save()
+    print "admin created!"
+except IntegrityError:
+    print "User 'admin' already created!"
 
-    app.debug = True
-    app.run(host='0.0.0.0', port=8008)
+app.debug = True
+app.run(host='0.0.0.0', port=8008)
