@@ -24,14 +24,13 @@ class CardGroup(db.Model):
 
 
 class Card(db.Model):
-    user = ForeignKeyField(User, related_name='user')
     creationdate = DateTimeField(default=datetime.datetime.now)
     firstusedate = CharField(null=True)
     expirationdate = CharField(null=True)
     enableexpire = CharField(null=True)
     expiredays = CharField(null=True)
     username = CharField(null=False)
-    useralias = CharField()
+    useralias = ForeignKeyField(User, db_column='useralias')
     uipass = CharField()
     credit = FloatField(default=0.0)
     tariff = CharField()
