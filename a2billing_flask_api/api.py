@@ -1,4 +1,4 @@
-from flask_peewee.rest import RestAPI, UserAuthentication, RestResource
+from flask_peewee.rest import RestAPI, UserAuthentication, RestResource, RestrictOwnerResource
 from flask import request
 from auth import auth
 from app import app
@@ -28,8 +28,9 @@ class CardResource(RestResource):
 
 
 # create a special resource for users that excludes email and password
-class UserResource(RestResource):
+class UserResource(RestrictOwnerResource):
     exclude = ('password', 'email',)
+    owner_field = 'user'
 
 
 # class LogrefillResource(RestResource):

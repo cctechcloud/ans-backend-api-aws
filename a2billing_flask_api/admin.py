@@ -1,7 +1,7 @@
 from flask_peewee.admin import Admin, ModelAdmin
 from app import app
 from auth import auth
-from models import CardGroup, Card, Callerid, Logrefill, Logpayment, Call, Country, Charge
+from models import CardGroup, Card, Callerid, Logrefill, Logpayment, Call, Country, Charge, Did, DidDestination
 # from models import Did, DidDestination
 
 
@@ -54,6 +54,6 @@ admin.register(Logpayment, LogpaymentAdmin)
 admin.register(Call, CallAdmin)
 admin.register(Country, CountryAdmin)
 admin.register(Charge, ChargeAdmin)
-# admin.register(Did, DidAdmin)
-# admin.register(DidDestination, DidDestinationAdmin)
+admin.register(Did, DidAdmin)
+admin.register(DidDestination, DidDestinationAdmin)
 auth.register_admin(admin)
