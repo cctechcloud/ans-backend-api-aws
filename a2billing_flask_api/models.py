@@ -14,7 +14,7 @@ class CardGroup(db.Model):
 
 
 class Card(db.Model):
-    # user = ForeignKeyField(User, related_name='tweets')
+    user = ForeignKeyField(User, related_name='Customer')
     creationdate = DateTimeField(default=datetime.datetime.now)
     firstusedate = CharField(null=True)
     expirationdate = CharField(null=True)
