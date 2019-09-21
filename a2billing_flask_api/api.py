@@ -28,9 +28,9 @@ class CardResource(RestResource):
 
 
 # create a special resource for users that excludes email and password
-class UserResource(RestrictOwnerResource):
+class UserResource(RestResource):
     exclude = ('password', 'email',)
-    owner_field = 'user'
+    
 
 
 # class LogrefillResource(RestResource):
