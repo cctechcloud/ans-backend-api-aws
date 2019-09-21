@@ -2,6 +2,16 @@ import datetime
 from app import db
 from peewee import *
 
+class User(db.Model):
+    active = IntegerField()
+    admin = IntegerField()
+    email = CharField(unique=True)
+    password = CharField()
+    username = CharField(unique=True)
+
+    class Meta:
+        db_table = 'user'
+
 
 class CardGroup(db.Model):
     name = CharField()
@@ -1794,14 +1804,3 @@ class Note(db.Model):
 
     class Meta:
         db_table = 'note'
-
-
-class User(db.Model):
-    active = IntegerField()
-    admin = IntegerField()
-    email = CharField(unique=True)
-    password = CharField()
-    username = CharField(unique=True)
-
-    class Meta:
-        db_table = 'user'
