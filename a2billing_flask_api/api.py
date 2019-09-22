@@ -10,7 +10,7 @@ import json
 # create a special resource for users that excludes email and password
 class CardResource(RestrictOwnerResource):
     # exclude = ('lock_pin',)
-    owner_field = 'useralias'
+    owner_field = 'serial'
 
     def check_post(self):
         datajson = json.loads(request.data)
