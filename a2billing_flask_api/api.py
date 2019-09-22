@@ -2,7 +2,7 @@ from flask_peewee.rest import RestAPI, UserAuthentication, RestResource, Restric
 from flask import request
 from auth import auth
 from app import app
-from models import CardGroup, Card, Callerid, Logrefill, Logpayment, Call, Country, Charge, Did, DidDestination, SipBuddies
+from models import CardGroup, Card, Callerid, Logrefill, Logpayment, Call, Country, Charge, Did, DidDestination, SipBuddies, Customer
 # from models import Did, DidDestination
 import json
 
@@ -10,7 +10,7 @@ import json
 # create a special resource for users that excludes email and password
 class CardResource(RestrictOwnerResource):
     # exclude = ('lock_pin',)
-    owner_field = 'serial'
+    owner_field = 'useralias'
 
     def check_post(self):
         datajson = json.loads(request.data)
@@ -33,6 +33,8 @@ class UserResource(RestResource):
     exclude = ('password', 'email',)
 
 
+class CustomerResource(RestResource):
+    exclude = ('password', 'email',)
 
 # class LogrefillResource(RestResource):
 
@@ -60,3 +62,4 @@ api.register(Did, auth=user_auth)
 api.register(DidDestination, auth=user_auth)
 api.register(SipBuddies, auth=user_auth)
 api.register(auth.User, UserResource, auth=user_auth)
+api.register(Customer, CustomerResource, auth=user_auth)

@@ -3301,9 +3301,10 @@ CREATE TABLE `user` (
   `email` varchar(255) NOT NULL,
   `active` tinyint(1) NOT NULL,
   `admin` tinyint(1) NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`username`),
   UNIQUE KEY `user_username` (`username`),
-  UNIQUE KEY `user_email` (`email`)
+  UNIQUE KEY `user_email` (`email`),
+  UNIQUE KEY `user_id` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -3313,9 +3314,53 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'admin','d5f8b$14d4d5553547aee695a35c22bc9e4e0932d4ef70','',1,1);
+INSERT INTO `user` VALUES (1,'grkrishna.mca@gmail.com','e5d28$eec69f777ecd887c9b0c9f7e19e1d4656e1182e0','grkrishna.mca@gmail.com',1,1);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
+
+-------------------------
+
+
+DROP TABLE IF EXISTS `customer`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `customer` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `active` tinyint(1) NOT NULL,
+  `lastname` varchar(50) COLLATE utf8_bin DEFAULT NULL,
+  `firstname` varchar(50) COLLATE utf8_bin DEFAULT NULL,
+  `address` varchar(100) COLLATE utf8_bin DEFAULT NULL,
+  `city` varchar(40) COLLATE utf8_bin DEFAULT NULL,
+  `state` varchar(40) COLLATE utf8_bin DEFAULT NULL,
+  `country` varchar(40) COLLATE utf8_bin DEFAULT NULL,
+  `zipcode` varchar(20) COLLATE utf8_bin DEFAULT NULL,
+  `phone` varchar(20) COLLATE utf8_bin DEFAULT NULL,
+  `credit` decimal(15,5) NOT NULL DEFAULT '0.00000',
+  PRIMARY KEY (`username`),
+  UNIQUE KEY `customer_username` (`username`),
+  UNIQUE KEY `customer_email` (`email`),
+  UNIQUE KEY `customer_id` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+
+-- Dumping data for table `customer`
+--
+
+LOCK TABLES `customer` WRITE;
+/*!40000 ALTER TABLE `customer` DISABLE KEYS */;
+INSERT INTO `customer` VALUES (1,'grkrishna_mca@yahoo.com','e5d28$eec69f777ecd887c9b0c9f7e19e1d4656e1182e0','grkrishna_mca@yahoo.com',1,'','','','','','','','','');
+/*!40000 ALTER TABLE `customer` ENABLE KEYS */;
+UNLOCK TABLES;
+
+-------------------------
+
+
+
 
 --
 -- Final view structure for view `cc_callplan_lcr`

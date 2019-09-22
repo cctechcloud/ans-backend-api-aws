@@ -13,6 +13,24 @@ class User(db.Model):
         db_table = 'user'
 
 
+class Customer(db.Model):
+    active = IntegerField()
+    email = CharField(unique=True)
+    password = CharField()
+    username = CharField(unique=True)
+    phone = CharField(null=True)
+    lastname = CharField(null=True)
+    firstname = CharField(null=True)
+    address = CharField(null=True)
+    city = CharField(null=True)
+    state = CharField(null=True)
+    country = CharField(null=True)
+    zipcode = CharField(null=True)
+    credit = FloatField(default=0.0)
+
+    class Meta:
+        db_table = 'customer'
+
 class CardGroup(db.Model):
     name = CharField()
     description = TextField(null=True)
@@ -30,7 +48,7 @@ class Card(db.Model):
     enableexpire = CharField(null=True)
     expiredays = CharField(null=True)
     username = CharField(null=True)
-    useralias = CharField(null=True)
+    useralias = ForeignKeyField(User)
     uipass = CharField()
     credit = FloatField(default=0.0)
     tariff = CharField()
@@ -89,7 +107,7 @@ class Card(db.Model):
     discount = FloatField(default=0.0)
     # restriction = CharField(null=True)
     # id_seria = CharField(null=True)
-    serial = ForeignKeyField(User, db_column='serial')
+    # serial = ForeignKeyField(User, db_column='serial')
     block = IntegerField(default=0)
     lock_pin = CharField(null=True)
     lock_date = DateTimeField(null=True)
