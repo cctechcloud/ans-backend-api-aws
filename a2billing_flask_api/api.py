@@ -41,6 +41,15 @@ class MessageResource(RestrictOwnerResource):
     include_resources = {'user': UserResource}
     owner_field = 'user'
 
+    validuser =  validate_owner(350, MessageResource)
+    print validuser
+
+    def check_put(self):
+        datajson = json.loads(request.data)
+        if 'content' not in datajson or len(datajson['username']) == 0:
+            return False
+
+        return True
 
 # class LogrefillResource(RestResource):
 
