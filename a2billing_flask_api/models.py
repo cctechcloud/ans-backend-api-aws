@@ -3,6 +3,7 @@ from app import db
 from peewee import *
 
 class User(db.Model):
+    id = PrimaryKeyField()
     active = IntegerField()
     admin = IntegerField()
     email = CharField(unique=True)
@@ -14,6 +15,7 @@ class User(db.Model):
 
 
 class Customer(db.Model):
+    id = PrimaryKeyField()
     active = IntegerField()
     email = CharField(unique=True)
     password = CharField()
@@ -33,7 +35,8 @@ class Customer(db.Model):
 
 
 class Message(db.Model):
-    user = ForeignKeyField(User, db_column='user_id')
+    id = PrimaryKeyField()
+    user = ForeignKeyField(User)
     content = TextField()
     pub_date = DateTimeField(default=datetime.datetime.now)
 

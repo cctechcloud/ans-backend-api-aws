@@ -1799,6 +1799,7 @@ class Note(BaseModel):
 
 
 class User(BaseModel):
+    id = PrimaryKeyField()
     active = IntegerField()
     admin = IntegerField()
     email = CharField(unique=True)
@@ -1807,3 +1808,33 @@ class User(BaseModel):
 
     class Meta:
         db_table = 'user'
+
+
+class Customer(BaseModel):
+    id = PrimaryKeyField()
+    active = IntegerField()
+    email = CharField(unique=True)
+    password = CharField()
+    username = CharField(unique=True)
+    phone = CharField(null=True)
+    lastname = CharField(null=True)
+    firstname = CharField(null=True)
+    address = CharField(null=True)
+    city = CharField(null=True)
+    state = CharField(null=True)
+    country = CharField(null=True)
+    zipcode = CharField(null=True)
+    credit = FloatField(default=0.0)
+
+    class Meta:
+        db_table = 'customer'
+
+
+class Message(BaseModel):
+    id = PrimaryKeyField()
+    user = ForeignKeyField(User, db_column='user_id')
+    content = TextField()
+    pub_date = DateTimeField(default=datetime.datetime.now)
+
+    class Meta:
+        db_table = 'message'

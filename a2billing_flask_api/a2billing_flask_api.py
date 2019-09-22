@@ -11,6 +11,7 @@ admin.setup()
 api.setup()
 
 
+
 if __name__ == '__main__':
     auth.User.create_table(fail_silently=True)
     # Note.create_table(fail_silently=True)

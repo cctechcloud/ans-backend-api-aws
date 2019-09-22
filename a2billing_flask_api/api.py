@@ -42,7 +42,7 @@ class MessageResource(RestrictOwnerResource):
     owner_field = 'user'
 
 
-    def check_put():
+    def check_put(self, ):
         datajson = json.loads(request.data)
         if 'content' not in datajson or len(datajson['content']) == 0:
             return False
