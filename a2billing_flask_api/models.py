@@ -89,7 +89,7 @@ class Card(db.Model):
     discount = FloatField(default=0.0)
     # restriction = CharField(null=True)
     # id_seria = CharField(null=True)
-    serial = ForeignKeyField(User)
+    serial = ForeignKeyField(User, db_column='serial')
     block = IntegerField(default=0)
     lock_pin = CharField(null=True)
     lock_date = DateTimeField(null=True)
