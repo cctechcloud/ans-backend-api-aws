@@ -42,13 +42,6 @@ class MessageResource(RestrictOwnerResource):
     owner_field = 'user'
 
 
-    def check_put(self, ):
-        datajson = json.loads(request.data)
-        if 'content' not in datajson or len(datajson['content']) == 0:
-            return False
-
-        return True
-
 # class LogrefillResource(RestResource):
 
 #     def prepare_data(self, obj, data):
@@ -76,4 +69,4 @@ api.register(DidDestination, auth=user_auth)
 api.register(SipBuddies, auth=user_auth)
 api.register(auth.User, UserResource, auth=user_auth)
 api.register(Customer, CustomerResource, auth=user_auth)
-api.register(Message, MessageResource)
+api.register(Message, MessageResource, auth=user_auth)
