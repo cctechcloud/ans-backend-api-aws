@@ -8,9 +8,8 @@ import json
 
 
 # create a special resource for users that excludes email and password
-class CardResource(RestrictOwnerResource):
+class CardResource(RestResource):
     # exclude = ('lock_pin',)
-    owner_field = 'username'
 
     def check_post(self):
         datajson = json.loads(request.data)
@@ -36,6 +35,12 @@ class UserResource(RestResource):
 class CustomerResource(RestResource):
     exclude = ('password', 'email',)
 
+
+
+class MessageResource(RestrictOwnerResource):
+    owner_field = 'user'
+
+api.register(Message, MessageResource)
 # class LogrefillResource(RestResource):
 
 #     def prepare_data(self, obj, data):
@@ -63,3 +68,4 @@ api.register(DidDestination, auth=user_auth)
 api.register(SipBuddies, auth=user_auth)
 api.register(auth.User, UserResource, auth=user_auth)
 api.register(Customer, CustomerResource, auth=user_auth)
+api.register(Message, MessageResource, auth=user_auth)
