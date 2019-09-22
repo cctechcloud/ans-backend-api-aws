@@ -1,7 +1,7 @@
 from flask_peewee.admin import Admin, ModelAdmin
 from app import app
 from auth import auth
-from models import CardGroup, Card, Callerid, Logrefill, Logpayment, Call, Country, Charge, Did, DidDestination, Customer
+from models import CardGroup, Card, Callerid, Logrefill, Logpayment, Call, Country, Charge, Did, DidDestination, Customer, Message
 # from models import Did, DidDestination
 
 
@@ -47,6 +47,10 @@ class DidDestinationAdmin(ModelAdmin):
 class CustomerAdmin(ModelAdmin):
     columns = ('id', 'username', 'password', 'email', 'phone', 'credit', 'active')
 
+class MessageAdmin(ModelAdmin):
+    columns = ('id', 'content', 'pub_date')
+
+
 
 admin = Admin(app, auth, branding='API Admin Site')
 admin.register(Card, CardAdmin)
@@ -60,4 +64,5 @@ admin.register(Charge, ChargeAdmin)
 admin.register(Did, DidAdmin)
 admin.register(DidDestination, DidDestinationAdmin)
 admin.register(Customer, CustomerAdmin)
+admin.register(Message, MessageAdmin)
 auth.register_admin(admin)

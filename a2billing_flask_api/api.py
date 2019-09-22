@@ -2,7 +2,7 @@ from flask_peewee.rest import RestAPI, UserAuthentication, RestResource, Restric
 from flask import request
 from auth import auth
 from app import app
-from models import CardGroup, Card, Callerid, Logrefill, Logpayment, Call, Country, Charge, Did, DidDestination, SipBuddies, Customer
+from models import CardGroup, Card, Callerid, Logrefill, Logpayment, Call, Country, Charge, Did, DidDestination, SipBuddies, Customer, Message
 # from models import Did, DidDestination
 import json
 
@@ -40,7 +40,6 @@ class CustomerResource(RestResource):
 class MessageResource(RestrictOwnerResource):
     owner_field = 'user'
 
-api.register(Message, MessageResource)
 # class LogrefillResource(RestResource):
 
 #     def prepare_data(self, obj, data):
