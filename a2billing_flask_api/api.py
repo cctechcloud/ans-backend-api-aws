@@ -40,6 +40,7 @@ class CustomerResource(RestResource):
 class MessageResource(RestrictOwnerResource):
     owner_field = 'user'
 
+
 # class LogrefillResource(RestResource):
 
 #     def prepare_data(self, obj, data):
