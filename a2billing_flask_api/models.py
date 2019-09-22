@@ -48,7 +48,7 @@ class Card(db.Model):
     enableexpire = CharField(null=True)
     expiredays = CharField(null=True)
     username = CharField(null=True)
-    useralias = ForeignKeyField(User)
+    useralias = ForeignKeyField(User, db_column='useralias')
     uipass = CharField()
     credit = FloatField(default=0.0)
     tariff = CharField()
