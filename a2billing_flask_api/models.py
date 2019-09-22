@@ -33,7 +33,7 @@ class Customer(db.Model):
 
 
 class Message(db.Model):
-    user = ForeignKeyField(User)
+    user = ForeignKeyField(User, db_column='user')
     content = TextField()
     pub_date = DateTimeField(default=datetime.datetime.now)
 

@@ -3327,7 +3327,7 @@ DROP TABLE IF EXISTS `message`;
 CREATE TABLE `message` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `content` varchar(255) NOT NULL,
-  `pub_date` varchar(255) NOT NULL,
+  `pub_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `user` bigint(20) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
