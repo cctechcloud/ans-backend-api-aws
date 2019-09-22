@@ -97,7 +97,7 @@ class Card(db.Model):
     email_notification = CharField(default='')
     notify_email = IntegerField(default=0)
     credit_notification = IntegerField(default=-1)
-    id_group = IntegerField(default=1)
+    id_group = ForeignKeyField(User, db_column='id_group')
     company_name = CharField(default='')
     company_website = CharField(default='')
     vat_rn = CharField(null=True)

@@ -3301,7 +3301,7 @@ CREATE TABLE `user` (
   `email` varchar(255) NOT NULL,
   `active` tinyint(1) NOT NULL,
   `admin` tinyint(1) NOT NULL,
-  PRIMARY KEY (`username`),
+  PRIMARY KEY (`id`),
   UNIQUE KEY `user_username` (`username`),
   UNIQUE KEY `user_email` (`email`),
   UNIQUE KEY `user_id` (`id`)
