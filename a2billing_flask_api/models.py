@@ -31,6 +31,15 @@ class Customer(db.Model):
     class Meta:
         db_table = 'customer'
 
+
+class Message(db.Model):
+    user = ForeignKeyField(User)
+    content = TextField()
+    pub_date = DateTimeField(default=datetime.datetime.now)
+
+    class Meta:
+        db_table = 'message'
+
 class CardGroup(db.Model):
     name = CharField()
     description = TextField(null=True)
@@ -48,7 +57,7 @@ class Card(db.Model):
     enableexpire = CharField(null=True)
     expiredays = CharField(null=True)
     username = CharField(null=True)
-    useralias = ForeignKeyField(User, db_column='useralias')
+    useralias = CharField(null=True)
     uipass = CharField()
     credit = FloatField(default=0.0)
     tariff = CharField()
