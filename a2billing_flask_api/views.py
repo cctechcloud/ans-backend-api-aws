@@ -131,10 +131,7 @@ def user_registration():
 
     # prepare dictionary for JSON return
     data = {
-        res_string = 'New user' + username + 'created'
-        data = { 'result': res_string }
-        'current_balance': new_balance,
-        'amount': amount,
-        'charge_id': charge.id
+
+        data = { 'result': 'New user created.' }
     }
     return jsonify(data)
