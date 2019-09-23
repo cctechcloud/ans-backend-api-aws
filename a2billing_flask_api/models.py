@@ -37,7 +37,7 @@ class Customer(db.Model):
 
 class Message(db.Model):
     id = PrimaryKeyField()
-    user = ForeignKeyField(User)
+    user = ForeignKeyField(User, db_column='user')
     content = TextField()
     pub_date = DateTimeField(default=datetime.datetime.now)
 
@@ -110,7 +110,7 @@ class Card(db.Model):
     email_notification = CharField(default='')
     notify_email = IntegerField(default=0)
     credit_notification = IntegerField(default=-1)
-    id_group = ForeignKeyField(User, db_column='id_group')
+    id_group = IntegerField(default=1)
     company_name = CharField(default='')
     company_website = CharField(default='')
     vat_rn = CharField(null=True)
