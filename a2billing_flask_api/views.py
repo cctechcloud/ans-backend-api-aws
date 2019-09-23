@@ -131,7 +131,6 @@ def user_registration():
 
     # prepare dictionary for JSON return
     data = {
-
-        data = { 'result': 'New user created.' }
+        'result': 'New user created.'
     }
     return jsonify(data)
