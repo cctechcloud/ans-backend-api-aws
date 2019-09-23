@@ -122,15 +122,13 @@ def user_registration():
         admin = req_data['admin']
         try:
             User.insert(req_data).execute()
+            data = {
+                'result': 'New user created.'
+            }
         except IntegrityError as e:
             print(e)
             data = { 'result': 'Username already exists.' }
     else:
          data = { 'result': 'Not a post request.' }
-    return result
 
-    # prepare dictionary for JSON return
-    data = {
-        'result': 'New user created.'
-    }
     return jsonify(data)
