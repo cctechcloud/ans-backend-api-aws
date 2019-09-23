@@ -3315,7 +3315,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (350,350,'grkrishna.mca@gmail.com','e5d28$eec69f777ecd887c9b0c9f7e19e1d4656e1182e0','grkrishna.mca@gmail.com',1,1);
+INSERT INTO `user` VALUES (351,351,'grkrishna_mca@gmail.com','e5d28$eec69f777ecd887c9b0c9f7e19e1d4656e1182e0','grkrishna_mca@gmail.com',1,1);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
