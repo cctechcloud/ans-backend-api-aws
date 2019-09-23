@@ -38,7 +38,7 @@ class CustomerResource(RestResource):
 
 
 class MessageResource(RestrictOwnerResource):
-    owner_field = 'user'
+    owner_field = 'user_id'
 
     '''
       # restrict PUT/DELETE to owner of an object, likewise apply owner to any
