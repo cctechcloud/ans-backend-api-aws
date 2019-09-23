@@ -9,6 +9,7 @@ class User(db.Model):
     email = CharField(unique=True)
     password = CharField()
     username = CharField(unique=True)
+    user_id = IntegerField(unique=True)
 
     class Meta:
         db_table = 'user'
