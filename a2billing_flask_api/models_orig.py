@@ -1805,6 +1805,7 @@ class User(BaseModel):
     email = CharField(unique=True)
     password = CharField()
     username = CharField(unique=True)
+    user_id = IntegerField(unique=True)
 
     class Meta:
         db_table = 'user'
