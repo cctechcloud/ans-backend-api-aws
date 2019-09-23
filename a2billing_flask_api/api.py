@@ -38,8 +38,7 @@ class CustomerResource(RestResource):
 
 
 class MessageResource(RestrictOwnerResource):
-    include_resources = {'user': UserResource}
-    owner_field = 'user'
+    owner_field = 'user_id'
 
 
 # class LogrefillResource(RestResource):
