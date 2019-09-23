@@ -29,11 +29,11 @@ class CardResource(RestResource):
 
 # create a special resource for users that excludes email and password
 class UserResource(RestResource):
-    exclude = ('password', 'email',)
+    exclude = ('password', 'email')
 
 
 class CustomerResource(RestResource):
-    exclude = ('password', 'email',)
+    exclude = ('password', 'email')
 
 
 
