@@ -3330,9 +3330,13 @@ CREATE TABLE `message` (
   `content` varchar(255) NOT NULL,
   `pub_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `user_id` bigint(20) NOT NULL,
+  `user` bigint(20) NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT fk_id
   FOREIGN KEY (user_id)
+    REFERENCES user(id),
+  CONSTRAINT fk_user
+  FOREIGN KEY (user)
     REFERENCES user(id)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;

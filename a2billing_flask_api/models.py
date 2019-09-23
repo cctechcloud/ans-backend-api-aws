@@ -40,7 +40,7 @@ class Message(db.Model):
     user_id = ForeignKeyField(User, db_column='user_id')
     content = TextField()
     pub_date = DateTimeField(default=datetime.datetime.now)
-
+    user = ForeignKeyField(User, db_column='user')
     class Meta:
         db_table = 'message'
 
