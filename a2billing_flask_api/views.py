@@ -121,9 +121,12 @@ def user_registration():
         active = req_data['active']
         admin = req_data['admin']
         try:
-            User.insert(req_data).execute()
+        #    User.insert(req_data).execute()
+            user = auth.User(username=username, email=email, admin=admin, active=active)
+            user.set_password(password)
+            user.save()
             data = {
-                'result': 'New user created.'
+                'result': 1
             }
         except IntegrityError as e:
             print(e)
