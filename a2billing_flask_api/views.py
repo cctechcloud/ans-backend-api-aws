@@ -121,10 +121,10 @@ def user_registration():
         active = req_data['active']
         admin = req_data['admin']
         try:
-            User.create(username=str(username), password=str(password), email=str(email), active=str(active), admin=str(admin))
-        except NameError as e:
+            User.insert(req_data).execute()
+        except IntegrityError as e:
             print(e)
-            data = { 'result': 'Name Error' }
+            data = { 'result': 'Username already exists.' }
     else:
          data = { 'result': 'Not a post request.' }
     return result
