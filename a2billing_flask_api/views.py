@@ -135,3 +135,39 @@ def user_registration():
          data = { 'result': 'Not a post request.' }
 
     return jsonify(data)
+
+
+@app.route('/custom/api/v0/login/', methods=['POST'])
+def user_login():
+    req_data = request.get_json()
+    if request.method == 'POST':  #this block is only entered when the form is submitted
+        username = req_data['username']
+        password = req_data['password']
+        try:
+
+            if not request.json or 'username' not in request.json:
+                return Response('Missing username parameter.', 400)
+
+            # Get Card(vat, credit)
+            user = User.select().where(User.username == username & User.password == password)
+            if not user and not user[0]:
+                return Response('User not found.', 400)
+
+            email = user[0].email
+            id = user[0].id
+            active = user[0].active
+            admin = user[0].admin
+            data = {
+                'result': 1,
+                'username': username,
+                'email': email,
+                'active': active,
+                'admin': admin
+            }
+        except NameError as e:
+            print(e)
+            data = { 'result': 'Name Error' }
+    else:
+         data = { 'result': 'Not a post request.' }
+
+    return jsonify(data)
