@@ -4,7 +4,7 @@ from flask import jsonify
 from peewee import *
 from functools import wraps
 from flask import g, request, redirect, url_for, Response
-from models import Card, Logrefill, Logpayment, Charge, User
+from models import Card, Logrefill, Logpayment, Charge
 import datetime
 
 
@@ -39,7 +39,7 @@ def private_view():
     return 'This is private!'
 
 
-@app.route('/custom/api/v0/refill/<int:card_id>', methods=['POST'])
+@app.route('/custom_api/refill/<int:card_id>', methods=['POST'])
 @custom_login_required
 def refill(card_id):
     if not request.json or 'credit' not in request.json:
@@ -80,7 +80,7 @@ def refill(card_id):
     return jsonify(data)
 
 
-@app.route('/custom/api/v0/extra_charge/<int:card_id>', methods=['POST'])
+@app.route('/custom_api/extra_charge/<int:card_id>', methods=['POST'])
 @custom_login_required
 def extra_charge(card_id):
     if not request.json or 'amount' not in request.json:
@@ -103,36 +103,6 @@ def extra_charge(card_id):
     # prepare dictionary for JSON return
     data = {
         'card_id': card_id,
-        'current_balance': new_balance,
-        'amount': amount,
-        'charge_id': charge.id
-    }
-    return jsonify(data)
-
-
-# route to cretae a new user (registration)
-@app.route('/custom/api/v0/register/', methods=['POST'])
-def user_registration():
-    req_data = request.get_json()
-    if request.method == 'POST':  #this block is only entered when the form is submitted
-        username = req_data['username']
-        password = req_data['password']
-        email = req_data['email']
-        active = req_data['active']
-        admin = req_data['admin']
-        try:
-            User.create(username=str(username), password=str(password), email=str(email), active=str(active), admin=str(admin)).execute()
-        except NameError as e:
-            print(e)
-            data = { 'result': 'Name Error' }
-    else:
-         data = { 'result': 'Not a post request.' }
-    return result
-
-    # prepare dictionary for JSON return
-    data = {
-        res_string = 'New user' + username + 'created'
-        data = { 'result': res_string }
         'current_balance': new_balance,
         'amount': amount,
         'charge_id': charge.id
