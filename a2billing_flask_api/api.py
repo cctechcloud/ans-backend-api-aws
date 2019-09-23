@@ -40,6 +40,29 @@ class CustomerResource(RestResource):
 class MessageResource(RestrictOwnerResource):
     owner_field = 'user'
 
+    '''
+      # restrict PUT/DELETE to owner of an object, likewise apply owner to any
+    # incoming POSTs
+    owner_field = 'user'
+
+    def validate_owner(self, user, obj):
+        return user == getattr(obj, self.owner_field)
+
+    def set_owner(self, obj, user):
+        setattr(obj, self.owner_field, user)
+
+    def check_put(self, obj):
+        return self.validate_owner(g.user, obj)
+
+    def check_delete(self, obj):
+        return self.validate_owner(g.user, obj)
+
+    def save_object(self, instance, raw_data):
+        self.set_owner(instance, g.user)
+        return super(RestrictOwnerResource, self).save_object(instance, raw_data)
+
+    '''
+
 
 # class LogrefillResource(RestResource):
 
