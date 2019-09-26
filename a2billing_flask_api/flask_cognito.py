@@ -4,6 +4,7 @@ from flask import _request_ctx_stack, current_app, jsonify, request
 from werkzeug.local import LocalProxy
 from cognitojwt import CognitoJWTException, decode as cognito_jwt_decode
 import logging
+from app import app
 
 log = logging.getLogger(__name__)
 
