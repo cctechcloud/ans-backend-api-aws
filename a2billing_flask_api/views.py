@@ -6,11 +6,44 @@ from functools import wraps
 from flask import g, request, redirect, url_for, Response
 from models import Card, Logrefill, Logpayment, Charge, User
 import datetime
+from flask_cognito import cognito_auth_required, current_user, current_cognito_jwt
 
+
+# configuration
+app.config.extend({
+    'COGNITO_REGION': 'eu-west-2',
+    'COGNITO_USERPOOL_ID': 'eu-west-2_3x4aABOWr',
+
+    # optional
+    'COGNITO_APP_CLIENT_ID': '16cmkbopacv4gt5csk5ee04g33',  # client ID you wish to verify user is authenticated against
+    'COGNITO_CHECK_TOKEN_EXPIRATION': False,  # disable token expiration checking for testing purposes
+    'COGNITO_JWT_HEADER_NAME': 'Authorization',
+    'COGNITO_JWT_HEADER_PREFIX': 'Bearer',
+})
+
+
+# initialize extension
+cogauth = CognitoAuth(app)
+
+@cogauth.identity_handler
+def lookup_cognito_user(payload):
+    """Look up user in our database from Cognito JWT payload."""
+    return User.query.filter(User.cognito_username == payload['username']).one_or_none()
 
 def response_auth_failed():
     return Response('Authentication failed for user', 401, {
         'WWW-Authenticate': 'Basic realm="Login Required"'
+    })
+
+
+@route('/custom/api/private')
+@cognito_auth_required
+def api_private():
+    # user must have valid cognito access or ID token in header
+    # (accessToken is recommended - not as much personal information contained inside as with idToken)
+    return jsonify({
+        'cognito_username': current_cognito_jwt['username'],   # from cognito pool
+        'user_id': current_user.id,   # from your database
     })
 
 
