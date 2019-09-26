@@ -75,7 +75,7 @@ class CognitoAuth(object):
 
     def identity_handler(self, callback):
         if self.identity_callback is not None:
-            raise Exception(f"Trying to override existing identity_handler on CognitoAuth. You should only set this once.")
+            raise Exception("Trying to override existing identity_handler on CognitoAuth. You should only set this once.")
         self.identity_callback = callback
         return callback
 
