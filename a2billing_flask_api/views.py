@@ -4,9 +4,9 @@ from flask import jsonify
 from peewee import *
 from functools import wraps
 from flask import g, request, redirect, url_for, Response
+import requests, json
 from models import Card, Logrefill, Logpayment, Charge, User
 import datetime
-from flask_cognito import cognito_auth_required, current_user, current_cognito_jwt
 
 
 # configuration
@@ -21,30 +21,17 @@ app.config.extend({
     'COGNITO_JWT_HEADER_PREFIX': 'Bearer',
 })
 
+@route('/custom/api/v0/user/fetch/')
+def fetch_user():
+    # get token value from header
+    token = request.headers.get('Authorization')
 
-# initialize extension
-cogauth = CognitoAuth(app)
-
-@cogauth.identity_handler
-def lookup_cognito_user(payload):
-    """Look up user in our database from Cognito JWT payload."""
-    return User.query.filter(User.cognito_username == payload['username']).one_or_none()
-
-def response_auth_failed():
-    return Response('Authentication failed for user', 401, {
-        'WWW-Authenticate': 'Basic realm="Login Required"'
-    })
-
-
-@route('/custom/api/private/')
-@cognito_auth_required
-def api_private():
+    headers = { 'Authorization' : 'Bearer ' + token }
+    r = requests.get('https://redirect-app.auth.eu-west-2.amazoncognito.com/oauth2/userInfo', headers=headers, verify=False)
+    j = json.loads(r.text)
     # user must have valid cognito access or ID token in header
     # (accessToken is recommended - not as much personal information contained inside as with idToken)
-    return jsonify({
-        'cognito_username': current_cognito_jwt['username'],   # from cognito pool
-        'user_id': current_user.id,   # from your database
-    })
+    return jsonify(json.dumps(j))
 
 
 def custom_login_required(f):
