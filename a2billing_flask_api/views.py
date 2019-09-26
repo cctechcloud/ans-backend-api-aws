@@ -9,17 +9,7 @@ from models import Card, Logrefill, Logpayment, Charge, User
 import datetime
 
 
-@route('/custom/api/v0/user/fetch/')
-def fetch_user():
-    # get token value from header
-    token = request.headers.get('Authorization')
 
-    headers = { 'Authorization' : 'Bearer ' + token }
-    r = requests.get('https://redirect-app.auth.eu-west-2.amazoncognito.com/oauth2/userInfo', headers=headers, verify=False)
-    j = json.loads(r.text)
-    # user must have valid cognito access or ID token in header
-    # (accessToken is recommended - not as much personal information contained inside as with idToken)
-    return jsonify(json.dumps(j))
 
 
 def custom_login_required(f):
@@ -179,3 +169,16 @@ def user_login():
          data = { 'result': 'Not a post request.' }
 
     return jsonify(data)
+
+
+
+# user must have valid cognito access or ID token in header
+@app.route('/custom/api/v0/user/fetch/')
+def fetch_user():
+    # get token value from header
+    token = request.headers.get('Authorization')
+
+    headers = { 'Authorization' : 'Bearer ' + token }
+    r = requests.get('https://redirect-app.auth.eu-west-2.amazoncognito.com/oauth2/userInfo', headers=headers, verify=False)
+    j = json.loads(r.text)
+    return jsonify(json.dumps(j))
