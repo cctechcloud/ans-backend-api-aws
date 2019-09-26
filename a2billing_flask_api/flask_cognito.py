@@ -151,7 +151,7 @@ def _cognito_auth_required():
         payload = _cog.decode_token(token=token)
     except CognitoJWTException as e:
         log.exception(e)
-        raise CognitoAuthError('Invalid Cognito Authentication Token', str(e)) from e
+        raise CognitoAuthError('Invalid Cognito Authentication Token')
 
     _request_ctx_stack.top.cogauth_cognito_jwt = payload
     _request_ctx_stack.top.cogauth_current_user = _cog.get_user(payload)
