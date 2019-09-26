@@ -70,7 +70,7 @@ class CognitoAuth(object):
     def _get_required_config(self, app, config_name):
         val = app.config.get(config_name)
         if not val:
-            raise Exception(f"{config_name} not found in app configuration but it is required.")
+            raise Exception("{config_name} not found in app configuration but it is required.")
         return val
 
     def identity_handler(self, callback):
