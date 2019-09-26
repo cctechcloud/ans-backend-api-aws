@@ -36,7 +36,7 @@ def response_auth_failed():
     })
 
 
-@route('/custom/api/private')
+@route('/custom/api/private/')
 @cognito_auth_required
 def api_private():
     # user must have valid cognito access or ID token in header
