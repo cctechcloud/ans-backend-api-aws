@@ -181,4 +181,4 @@ def fetch_user():
     headers = { 'Authorization' : 'Bearer ' + token }
     r = requests.get('https://redirect-app.auth.eu-west-2.amazoncognito.com/oauth2/userInfo', headers=headers, verify=False)
     j = json.loads(r.text)
-    return j
+    return jsonify(j)
