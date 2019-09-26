@@ -9,18 +9,6 @@ from models import Card, Logrefill, Logpayment, Charge, User
 import datetime
 
 
-# configuration
-app.config.extend({
-    'COGNITO_REGION': 'eu-west-2',
-    'COGNITO_USERPOOL_ID': 'eu-west-2_3x4aABOWr',
-
-    # optional
-    'COGNITO_APP_CLIENT_ID': '16cmkbopacv4gt5csk5ee04g33',  # client ID you wish to verify user is authenticated against
-    'COGNITO_CHECK_TOKEN_EXPIRATION': False,  # disable token expiration checking for testing purposes
-    'COGNITO_JWT_HEADER_NAME': 'Authorization',
-    'COGNITO_JWT_HEADER_PREFIX': 'Bearer',
-})
-
 @route('/custom/api/v0/user/fetch/')
 def fetch_user():
     # get token value from header
