@@ -199,7 +199,14 @@ def fetch_user():
     country = card[0].country
     zipcode = card[0].zipcode
     phone = card[0].phone
+    id = card[0].id
 
+    did = Did.select().where(Did.iduser == id)
+    access_number = did[0].did
+
+    destination = DidDestination.select().where(DidDestination.id_cc_card == id)
+    sip_destination = destination[0].destination
+    pstn_destination = destination[1].destination
 
     data = {
         'username': username,
@@ -213,6 +220,9 @@ def fetch_user():
         'state': state,
         'country': country,
         'zipcode': zipcode,
-        'phone': phone
+        'phone': phone,
+        'access_number': access_number,
+        'sip_destination': sip_destination,
+        'pstn_destination': pstn_destination
     }
     return jsonify(data)
