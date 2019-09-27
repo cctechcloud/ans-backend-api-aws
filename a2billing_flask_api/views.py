@@ -188,14 +188,31 @@ def fetch_user():
         return Response('Card not found.', 400)
 
     username = card[0].username
+    firstname = card[0].firstname
+    lastname = card[0].lastname
     email = card[0].email
     balance = card[0].credit
     status = card[0].status
+    address = card[0].address
+    city = card[0].city
+    state = card[0].state
+    country = card[0].country
+    zipcode = card[0].zipcode
+    phone = card[0].phone
+
 
     data = {
         'username': username,
         'email': email,
         'balance': balance,
-        'status': status
+        'status': status,
+        'firstname': firstname,
+        'lastname': lastname,
+        'address': address,
+        'city': city,
+        'state': state,
+        'country': country,
+        'zipcode': zipcode,
+        'phone': phone
     }
     return jsonify(data)
