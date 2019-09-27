@@ -173,12 +173,12 @@ def user_login():
 
 
 # user must have valid cognito access or ID token in header
-@app.route('/custom/api/v0/user/fetch/', methods=['POST'])
+@app.route('/custom/api/v0/user/fetch/', methods=['GET', 'POST'])
 def fetch_user():
     # get token value from header
-    token = str(request.headers.get('Authorization'))
+    token = request.headers.get('Authorization')
 
     headers = { 'Authorization' : 'Bearer ' + token }
     r = requests.get('https://redirect-app.auth.eu-west-2.amazoncognito.com/oauth2/userInfo', headers=headers, verify=False)
-    j = json.loads(r.text)
+    j = r.json
     return jsonify(j)
