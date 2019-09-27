@@ -198,4 +198,4 @@ def fetch_user():
         'balance': balance,
         'status': status
     }
-    return jsonify(j)
+    return jsonify(data)
