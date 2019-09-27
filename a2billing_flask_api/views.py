@@ -5,7 +5,7 @@ from peewee import *
 from functools import wraps
 from flask import g, request, redirect, url_for, Response
 import requests, json
-from models import Card, Logrefill, Logpayment, Charge, User
+from models import Card, Logrefill, Logpayment, Charge, User, Did, DidDestination
 import datetime
 
 
