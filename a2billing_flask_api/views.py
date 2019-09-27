@@ -176,9 +176,9 @@ def user_login():
 @app.route('/custom/api/v0/user/fetch/', methods=['GET', 'POST'])
 def fetch_user():
     # get token value from header
-    token = request.headers.get('Authorization')
+    token = str(request.headers.get('Authorization'))
 
-    headers = { 'Authorization' : 'Bearer ' + token }
+    headers = { 'Authorization' : token }
     r = requests.get('https://redirect-app.auth.eu-west-2.amazoncognito.com/oauth2/userInfo', headers=headers, verify=False)
-    j = r.json
+    j = json.loads(r.text)
     return jsonify(j)
