@@ -181,4 +181,21 @@ def fetch_user():
     headers = { 'Authorization' : token }
     r = requests.get('https://redirect-app.auth.eu-west-2.amazoncognito.com/oauth2/userInfo', headers=headers, verify=False)
     j = json.loads(r.text)
+    email = j['email']
+    # Get Card(vat, credit)
+    card = Card.select().where(Card.email == email)
+    if not card and not card[0]:
+        return Response('Card not found.', 400)
+
+    username = card[0].username
+    email = card[0].email
+    balance = card[0].credit
+    status = card[0].status
+
+    data = {
+        'username': username,
+        'email': email,
+        'balance': balance,
+        'status': status
+    }
     return jsonify(j)
