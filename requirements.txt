@@ -1,7 +1,7 @@
 Flask==0.10.1
 Flask-HTTPAuth==2.7.0
 Jinja2==2.8
-flask-peewee
+flask-peewee==3.0.3
 WTForms==2.0.2
 Werkzeug==0.11.2
 aniso8601==1.1.0
@@ -10,7 +10,7 @@ docutils==0.12
 gunicorn==19.4.1
 itsdangerous==0.24
 MarkupSafe==0.23
-peewee==3.0.3
+peewee
 Pygments==2.0.2
 python-dateutil==2.4.2
 pytz==2015.7
