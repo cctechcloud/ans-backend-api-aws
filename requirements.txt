@@ -16,7 +16,7 @@ pytz
 six
 snowballstemmer
 uWSGI
-wtf-peewee
+wtf-peewee==3.0.0
 simplejson
 PyMySQL
 Flask-Cognito
