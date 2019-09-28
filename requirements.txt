@@ -1,7 +1,7 @@
 Flask==0.10.1
 Flask-HTTPAuth==2.7.0
 Jinja2==2.8
-flask-peewee==0.6.5
+flask-peewee
 WTForms==2.0.2
 Werkzeug==0.11.2
 aniso8601==1.1.0
