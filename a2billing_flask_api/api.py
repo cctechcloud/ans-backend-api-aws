@@ -2,7 +2,7 @@ from flask_peewee.rest import RestAPI, UserAuthentication, RestResource, Restric
 from flask import request
 from auth import auth
 from app import app
-from models import CardGroup, Card, Callerid, Logrefill, Logpayment, Call, Country, Charge, Did, DidDestination, SipBuddies, Customer, Message
+from models import CardGroup, Card, Callerid, Logrefill, Logpayment, Call, Country, Charge, Did, DidDestination, SipBuddies, CountryServer, Ticket
 # from models import Did, DidDestination
 import json
 
@@ -32,13 +32,6 @@ class UserResource(RestResource):
     exclude = ('password', 'email')
 
 
-class CustomerResource(RestResource):
-    exclude = ('password', 'email')
-
-
-
-class MessageResource(RestrictOwnerResource):
-    owner_field = 'user'
 
     '''
       # restrict PUT/DELETE to owner of an object, likewise apply owner to any
@@ -89,4 +82,5 @@ api.register(Charge, auth=user_auth)
 api.register(Did, auth=user_auth)
 api.register(DidDestination, auth=user_auth)
 api.register(SipBuddies, auth=user_auth)
-api.register(Message, MessageResource, auth=user_auth)
+api.register(CountryServer, auth=user_auth)
+api.register(Ticket, auth=user_auth)

@@ -13,18 +13,15 @@ api.setup()
 
 
 if __name__ == '__main__':
-    auth.User.create_table(fail_silently=True)
     # Note.create_table(fail_silently=True)
 
     try:
-        admin = auth.User(username='admin', email='', admin=True, active=True)
-        admin.set_password('admin')
-        admin.save()
+        print("User admin already existing!")
     except IntegrityError:
-        print "User admin already created!"
+        print("User admin already created!")
 
-        app.debug = True
-        app.run(host='0.0.0.0', port=8008)
+    app.debug = True
+    app.run(host='0.0.0.0', port=8008)
 
 #@app.route('/status', methods=['GET', 'POST'])
 #def status():

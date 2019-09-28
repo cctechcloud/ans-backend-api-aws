@@ -1,12 +1,12 @@
 from flask_peewee.admin import Admin, ModelAdmin
 from app import app
 from auth import auth
-from models import CardGroup, Card, Callerid, Logrefill, Logpayment, Call, Country, Charge, Did, DidDestination, Customer, Message
+from models import CardGroup, Card, Callerid, Logrefill, Logpayment, Call, Country, Charge, Did, DidDestination, CountryServer, Alarm, Ticket
 # from models import Did, DidDestination
 
 
 class CardAdmin(ModelAdmin):
-    columns = ('id', 'username', 'creationdate', 'credit', 'status',)
+    columns = ('id', 'username', 'creationdate', 'credit', 'status')
 
 
 class CardGroupAdmin(ModelAdmin):
@@ -22,11 +22,11 @@ class LogrefillAdmin(ModelAdmin):
 
 
 class LogpaymentAdmin(ModelAdmin):
-    columns = ('id', 'card', 'date', 'credit', 'refill_type',)
+    columns = ('id', 'card', 'date', 'payment', 'payment_type',)
 
 
 class CallAdmin(ModelAdmin):
-    columns = ('card_id', 'sessionid', 'dnid')
+    columns = ('uniqueid','card_id', 'sessionid', 'starttime', 'stoptime', 'src', 'dnid', 'calledstation', 'real_sessiontime', 'buycost', 'sessionbill', 'terminatecauseid')
 
 
 class CountryAdmin(ModelAdmin):
@@ -44,15 +44,18 @@ class DidAdmin(ModelAdmin):
 class DidDestinationAdmin(ModelAdmin):
     columns = ('destination', 'id_cc_card', 'id_cc_did', 'activated')
 
-class CustomerAdmin(ModelAdmin):
-    columns = ('id', 'username', 'password', 'email', 'phone', 'credit', 'active')
 
-class MessageAdmin(ModelAdmin):
-    columns = ('id', 'content', 'pub_date')
+class CountryServerAdmin(ModelAdmin):
+    columns = ('id', 'countrycode', 'countryname', 'countryprefix', 'server', 'port')
 
 
+class TicketAdmin(ModelAdmin):
+    columns = ('id', 'title', 'description', 'creationdate', 'priority', 'creator', 'creator_type', 'id_component', 'status', 'viewed_cust', 'viewed_agent', 'viewed_admin' )
 
-admin = Admin(app, auth, branding='API Admin Site')
+
+
+
+admin = Admin(app, auth, branding='Redirect API Admin Site')
 admin.register(Card, CardAdmin)
 admin.register(CardGroup, CardGroupAdmin)
 admin.register(Callerid, CalleridAdmin)
@@ -63,6 +66,6 @@ admin.register(Country, CountryAdmin)
 admin.register(Charge, ChargeAdmin)
 admin.register(Did, DidAdmin)
 admin.register(DidDestination, DidDestinationAdmin)
-admin.register(Customer, CustomerAdmin)
-admin.register(Message, MessageAdmin)
+admin.register(CountryServer, CountryServerAdmin)
+admin.register(Ticket, TicketAdmin)
 auth.register_admin(admin)

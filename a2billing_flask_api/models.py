@@ -9,30 +9,10 @@ class User(db.Model):
     email = CharField(unique=True)
     password = CharField()
     username = CharField(unique=True)
-    user_id = IntegerField(unique=True)
+    user_id = CharField(unique=True)
 
     class Meta:
         db_table = 'user'
-
-
-class Customer(db.Model):
-    id = PrimaryKeyField()
-    active = IntegerField()
-    email = CharField(unique=True)
-    password = CharField()
-    username = CharField(unique=True)
-    phone = CharField(null=True)
-    lastname = CharField(null=True)
-    firstname = CharField(null=True)
-    address = CharField(null=True)
-    city = CharField(null=True)
-    state = CharField(null=True)
-    country = CharField(null=True)
-    zipcode = CharField(null=True)
-    credit = FloatField(default=0.0)
-
-    class Meta:
-        db_table = 'customer'
 
 
 class Message(db.Model):
@@ -43,6 +23,18 @@ class Message(db.Model):
     user = ForeignKeyField(User, related_name='users')
     class Meta:
         db_table = 'message'
+
+
+class CountryServer(db.Model):
+    countrycode = CharField()
+    countryname = CharField()
+    countryprefix = CharField()
+    server = CharField()
+    port = CharField()
+    id = BigIntegerField(primary_key=True)
+
+    class Meta:
+        db_table = 'country_server'
 
 class CardGroup(db.Model):
     name = CharField()

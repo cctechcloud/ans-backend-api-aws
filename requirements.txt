@@ -20,3 +20,5 @@ snowballstemmer==1.2.0
 uWSGI==2.0.15
 wtf-peewee==0.2.5
 simplejson==3.8.1
+PyMySQL
+Flask-Cognito

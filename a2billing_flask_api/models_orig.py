@@ -2,20 +2,19 @@ from flask_peewee.db import Database
 from app import db
 
 
-    # Configure your A2Billing database
-    DATABASE = {
+
+DATABASE = {
         'host': '159.65.17.220',
         'port': 3306,
         'name': 'mya2billing',
         'engine': 'peewee.MySQLDatabase',
         'user': 'a2billinguser',
         'passwd': 'a2billing',
-    }
+}
 
 
 from peewee import *
 
-#database = MySQLDatabase('mya2billing', **{'password': 'a2billing', 'user': 'a2billinguser'})
 database = MySQLDatabase('mya2billing', **{'host': '159.65.17.220', 'port': '3306', 'user': 'a2billinguser', 'password': 'a2billing'})
 
 class BaseModel(Model):
@@ -1840,3 +1839,14 @@ class Message(BaseModel):
 
     class Meta:
         db_table = 'message'
+
+class CountryServer(BaseModel):
+    countrycode = CharField()
+    countryname = CharField()
+    countryprefix = CharField()
+    server = CharField()
+    port = CharField()
+    id = BigIntegerField(primary_key=True)
+
+    class Meta:
+        db_table = 'country_server'
