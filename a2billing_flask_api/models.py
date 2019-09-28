@@ -460,7 +460,7 @@ class CallbackSpool(db.Model):
     actionid = CharField(null=True)
     agi_result = CharField(null=True)
     application = CharField(null=True)
-    async = CharField(null=True)
+    apsync = CharField(null=True)
     callback_time = DateTimeField()
     callerid = CharField(null=True)
     channel = CharField(null=True)
