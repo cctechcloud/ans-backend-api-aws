@@ -13,17 +13,8 @@ class CardResource(RestResource):
 
     def check_post(self):
         datajson = json.loads(request.data)
-        if 'username' not in datajson or len(datajson['username']) == 0:
+        if 'email' not in datajson or len(datajson['email']) == 0:
             return False
-        if 'useralias' not in datajson or len(datajson['useralias']) == 0:
-            return False
-        if 'uipass' not in datajson or len(datajson['uipass']) == 0:
-            return False
-        if 'credit' not in datajson or len(datajson['credit']) == 0:
-            return False
-        if 'tariff' not in datajson or len(datajson['tariff']) == 0:
-            return False
-
         return True
 
 

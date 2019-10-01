@@ -9,7 +9,7 @@ class Configuration(object):
         'name': 'mya2billing',
         'engine': 'peewee.MySQLDatabase',
         'user': 'a2billinguser',
-        'passwd': 'a2billing',
+        'passwd': 'Kr!5hang',
     }
 
     DEBUG = True
