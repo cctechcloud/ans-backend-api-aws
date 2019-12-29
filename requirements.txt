@@ -20,3 +20,4 @@ wtf-peewee==3.0.0
 simplejson
 PyMySQL
 Flask-Cognito
+twilio
