@@ -64,8 +64,8 @@ def onboarding(country, email, amount, order_number, ticket_id, destination):
 
     # step 1 :  check and buy a phone number for a country under Twilio account
     # Don't hardcode. Load it from Environment variable.
-    account_sid = os.environ.get("MASTER_ACCOUNT_SID")
-    auth_token = os.environ.get("MASTER_AUTH_TOKEN")
+    account_sid = os.environ.get("TWILIO_ACCOUNT_SID")
+    auth_token = os.environ.get("TWILIO_AUTH_TOKEN")
     default_address_sid = "Address SID for default address"
     client = Client(account_sid, auth_token)
 

@@ -4,12 +4,12 @@
 class Configuration(object):
     # Configure your A2Billing database peewee.MySQLDatabase
     DATABASE = {
-        'host': 'red.ca0vcrcbf5na.eu-west-2.rds.amazonaws.com',
+        'host': os.environ.get("A2B_DB_HOST"),
         'port': 3306,
-        'name': 'mya2billing',
+        'name': os.environ.get("A2B_DB_NAME"),
         'engine': 'peewee.MySQLDatabase',
-        'user': 'a2billinguser',
-        'passwd': 'Kr1shang',
+        'user': os.environ.get("A2B_DB_USER"),
+        'passwd': os.environ.get("A2B_DB_PASSWORD"),
     }
 
     DEBUG = True

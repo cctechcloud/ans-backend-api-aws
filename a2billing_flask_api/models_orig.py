@@ -4,18 +4,18 @@ from app import db
 
 
 DATABASE = {
-        'host': 'red.ca0vcrcbf5na.eu-west-2.rds.amazonaws.com',
+        'host': '',
         'port': 3306,
-        'name': 'mya2billing',
+        'name': '',
         'engine': 'peewee.MySQLDatabase',
-        'user': 'a2billinguser',
-        'passwd': 'a2billing',
+        'user': '',
+        'passwd': '',
 }
 
 
 from peewee import *
 
-database = MySQLDatabase('mya2billing', **{'host': 'red.ca0vcrcbf5na.eu-west-2.rds.amazonaws.com', 'port': '3306', 'user': 'a2billinguser', 'password': 'a2billing'})
+database = MySQLDatabase('', **{'host': '', 'port': '3306', 'user': '', 'password': ''})
 
 class BaseModel(Model):
     class Meta:
