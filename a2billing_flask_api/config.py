@@ -1,4 +1,5 @@
 # config
+import os
 
 
 class Configuration(object):
