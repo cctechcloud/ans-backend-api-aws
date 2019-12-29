@@ -45,7 +45,7 @@ class UserResource(RestResource):
         self.set_owner(instance, g.user)
         return super(RestrictOwnerResource, self).save_object(instance, raw_data)
 
-    '''
+
 
 
 # class LogrefillResource(RestResource):
@@ -75,3 +75,5 @@ api.register(DidDestination, auth=user_auth)
 api.register(SipBuddies, auth=user_auth)
 api.register(CountryServer, auth=user_auth)
 api.register(Ticket, auth=user_auth)
+
+'''

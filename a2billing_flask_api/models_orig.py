@@ -4,7 +4,7 @@ from app import db
 
 
 DATABASE = {
-        'host': '159.65.17.220',
+        'host': 'red.ca0vcrcbf5na.eu-west-2.rds.amazonaws.com',
         'port': 3306,
         'name': 'mya2billing',
         'engine': 'peewee.MySQLDatabase',
@@ -15,7 +15,7 @@ DATABASE = {
 
 from peewee import *
 
-database = MySQLDatabase('mya2billing', **{'host': '159.65.17.220', 'port': '3306', 'user': 'a2billinguser', 'password': 'a2billing'})
+database = MySQLDatabase('mya2billing', **{'host': 'red.ca0vcrcbf5na.eu-west-2.rds.amazonaws.com', 'port': '3306', 'user': 'a2billinguser', 'password': 'a2billing'})
 
 class BaseModel(Model):
     class Meta:
