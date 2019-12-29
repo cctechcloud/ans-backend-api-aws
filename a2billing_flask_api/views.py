@@ -380,7 +380,7 @@ def paid_order():
 
         for product_name in line_items_list:
             if 'Top-up' in product_name['title']:
-                apply_to_number = product_name['properties']['value']
+                apply_to_number = product_name['properties'][0]['value']
                 if not apply_to_number:
                         print("Topup phone number missing")
                         account_number = '5834639514'
@@ -394,7 +394,7 @@ def paid_order():
                 country = product_name['title']
                 email = req_data['email']
                 amount = product_name['price']
-                forward_to_number = product_name['properties']['value']
+                forward_to_number = product_name['properties'][0]['value']
                 if not forward_to_number:
                         print("Forward to phone number i.e, Destination is missing")
                         destination = '+447412678577'
