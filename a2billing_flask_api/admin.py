@@ -53,9 +53,11 @@ class TicketAdmin(ModelAdmin):
     columns = ('id', 'title', 'description', 'creationdate', 'priority', 'creator', 'creator_type', 'id_component', 'status', 'viewed_cust', 'viewed_agent', 'viewed_admin' )
 
 
-'''
+
 
 admin = Admin(app, auth, branding='Redirect API Admin Site')
+
+'''
 admin.register(Card, CardAdmin)
 admin.register(CardGroup, CardGroupAdmin)
 admin.register(Callerid, CalleridAdmin)

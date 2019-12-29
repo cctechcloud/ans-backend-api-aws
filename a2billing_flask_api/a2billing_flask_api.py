@@ -3,8 +3,8 @@ from auth import auth
 # from flask import Blueprint, abort, request, Response, session, redirect, url_for, g
 from peewee import IntegrityError
 
-from admin import admin
-from api import api
+#from admin import admin
+#from api import api
 from views import *
 
 admin.setup()
