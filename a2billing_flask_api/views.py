@@ -135,7 +135,7 @@ def onboarding(country, email, amount, order_number, ticket_id, destination, exp
     company_name = req_data['default_address']['company']
 
     # step 2 : Create Card
-    card = Card.create(username= account_number, useralias= account_number, uipass= passcode, email= email, sip_buddy= 1, lock_pin= pin, country= country_code, expirationdate= expiry_date, enableexpire= '1', firstname= firstname, lastname= lastname, address= address, city= city, state= state, country= country, zipcode= zipcode, phone= phone, company_name= company_name)
+    card = Card.create(username= account_number, useralias= account_number, uipass= passcode, email= email, sip_buddy= 1, lock_pin= pin, country= country_code, expirationdate= expiry_date, enableexpire= '1', firstname= firstname, lastname= lastname, address= address, city= city, state= state, zipcode= zipcode, phone= phone, company_name= company_name)
     print(card.username)       #
     add_ticket_comment("Card created with id: " + str(card.id) + " and username: " + account_number + " and country: " + country, order_number, ticket_id)
 
