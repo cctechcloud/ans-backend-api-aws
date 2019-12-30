@@ -58,7 +58,7 @@ def verify_webhook(data, hmac_header):
     return hmac.compare_digest(computed_hmac, hmac_header.encode('utf-8'))
 
 # ***** function to check avaiibile phone numbers in the country ******
-def onboarding(country, email, amount, order_number, ticket_id, destination):
+def onboarding(country, email, amount, order_number, ticket_id, destination, expiry_date, req_data):
 
     country_code = inv_country_code_dict[country]
 
@@ -123,8 +123,19 @@ def onboarding(country, email, amount, order_number, ticket_id, destination):
 
     pin = random.randint(1000,9999)
     passcode = email + str(pin)
+
+    firstname = req_data['default_address']['first_name']
+    lastname = req_data['default_address']['last_name']
+    address = req_data['default_address']['address1']
+    city = req_data['default_address']['city']
+    state = req_data['default_address']['address2']
+    country = req_data['default_address']['country']
+    zipcode = req_data['default_address']['zip']
+    phone = req_data['default_address']['phone']
+    company_name = req_data['default_address']['company']
+
     # step 2 : Create Card
-    card = Card.create(username= account_number, useralias= account_number, uipass= passcode, email= email, sip_buddy= 1, lock_pin= pin, country= country_code, expiredays= '30', enableexpire= '1')
+    card = Card.create(username= account_number, useralias= account_number, uipass= passcode, email= email, sip_buddy= 1, lock_pin= pin, country= country_code, expirationdate= expiry_date, enableexpire= '1', firstname= firstname, lastname= lastname, address= address, city= city, state= state, country= country, zipcode= zipcode, phone= phone, company_name= company_name)
     print(card.username)       #
     add_ticket_comment("Card created with id: " + str(card.id) + " and username: " + account_number + " and country: " + country, order_number, ticket_id)
 
@@ -381,12 +392,13 @@ def paid_order():
         for product_name in line_items_list:
             if 'Top-up' in product_name['title']:
                 apply_to_number = product_name['properties'][0]['value']
+                print("Apply Topup to phone number" + forward_to_number)
                 if not apply_to_number:
                         print("Topup phone number missing")
                         account_number = '5834639514'
                         add_ticket_comment("Topup phone number missing in the data payload properties", order_number, new_ticket.id)
                 else:
-                        account_number = apply_to_number[0]
+                        account_number = apply_to_number
                 amount = product_name['price']
                 print(account_number, product_name['price'], amount)
                 buy_topup(account_number, amount, order_number, new_ticket.id)
@@ -394,15 +406,19 @@ def paid_order():
                 country = product_name['title']
                 email = req_data['email']
                 amount = product_name['price']
+                expiry_in_months = product_name['variant_title']
+                expiry_in_days = (int(expiry_in_months) * 30) - 1
+                expiry_date = str(datetime.datetime.now() + datetime.timedelta(29))
                 forward_to_number = product_name['properties'][0]['value']
+                print("Forward to phone number is" + forward_to_number)
                 if not forward_to_number:
                         print("Forward to phone number i.e, Destination is missing")
-                        destination = '+447412678577'
+                        destination = '+441793250311'
                         add_ticket_comment("Forward to phone number i.e, Destination is missing in the data payload properties..setting default destination", order_number, new_ticket.id)
                 else:
-                        destination = forward_to_number[0]
+                        destination = forward_to_number
 
-                result = onboarding(country, email, amount, order_number, new_ticket.id, destination)
+                result = onboarding(country, email, amount, order_number, new_ticket.id, destination, expiry_date, req_data)
                 print(result)
 
             Ticket.update(status=1,priority=1).where(Ticket.title == str(order_number)).execute()
