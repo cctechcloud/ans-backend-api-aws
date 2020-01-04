@@ -21,3 +21,4 @@ simplejson
 PyMySQL
 Flask-Cognito
 twilio
+flask-mail

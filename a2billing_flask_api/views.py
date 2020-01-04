@@ -14,12 +14,18 @@ import base64
 from twilio.rest import Client
 import random
 import os
+from app import mail
+from flask_mail import Mail, Message
 
 
 
 
 country_code_dict = {"BD": "Bangladesh", "BE": "Belgium", "BF": "Burkina Faso", "BG": "Bulgaria", "BA": "Bosnia and Herzegovina", "BB": "Barbados", "WF": "Wallis and Futuna", "BL": "Saint Barthelemy", "BM": "Bermuda", "BN": "Brunei", "BO": "Bolivia", "BH": "Bahrain", "BI": "Burundi", "BJ": "Benin", "BT": "Bhutan", "JM": "Jamaica", "BV": "Bouvet Island", "BW": "Botswana", "WS": "Samoa", "BQ": "Bonaire, Saint Eustatius and Saba ", "BR": "Brazil", "BS": "Bahamas", "JE": "Jersey", "BY": "Belarus", "BZ": "Belize", "RU": "Russia", "RW": "Rwanda", "RS": "Serbia", "TL": "East Timor", "RE": "Reunion", "TM": "Turkmenistan", "TJ": "Tajikistan", "RO": "Romania", "TK": "Tokelau", "GW": "Guinea-Bissau", "GU": "Guam", "GT": "Guatemala", "GS": "South Georgia and the South Sandwich Islands", "GR": "Greece", "GQ": "Equatorial Guinea", "GP": "Guadeloupe", "JP": "Japan", "GY": "Guyana", "GG": "Guernsey", "GF": "French Guiana", "GE": "Georgia", "GD": "Grenada", "GB": "United Kingdom", "GA": "Gabon", "SV": "El Salvador", "GN": "Guinea", "GM": "Gambia", "GL": "Greenland", "GI": "Gibraltar", "GH": "Ghana", "OM": "Oman", "TN": "Tunisia", "JO": "Jordan", "HR": "Croatia", "HT": "Haiti", "HU": "Hungary", "HK": "Hong Kong", "HN": "Honduras", "HM": "Heard Island and McDonald Islands", "VE": "Venezuela", "PR": "Puerto Rico", "PS": "Palestinian Territory", "PW": "Palau", "PT": "Portugal", "SJ": "Svalbard and Jan Mayen", "PY": "Paraguay", "IQ": "Iraq", "PA": "Panama", "PF": "French Polynesia", "PG": "Papua New Guinea", "PE": "Peru", "PK": "Pakistan", "PH": "Philippines", "PN": "Pitcairn", "PL": "Poland", "PM": "Saint Pierre and Miquelon", "ZM": "Zambia", "EH": "Western Sahara", "EE": "Estonia", "EG": "Egypt", "ZA": "South Africa", "EC": "Ecuador", "IT": "Italy", "VN": "Vietnam", "SB": "Solomon Islands", "ET": "Ethiopia", "SO": "Somalia", "ZW": "Zimbabwe", "SA": "Saudi Arabia", "ES": "Spain", "ER": "Eritrea", "ME": "Montenegro", "MD": "Moldova", "MG": "Madagascar", "MF": "Saint Martin", "MA": "Morocco", "MC": "Monaco", "UZ": "Uzbekistan", "MM": "Myanmar", "ML": "Mali", "MO": "Macao", "MN": "Mongolia", "MH": "Marshall Islands", "MK": "Macedonia", "MU": "Mauritius", "MT": "Malta", "MW": "Malawi", "MV": "Maldives", "MQ": "Martinique", "MP": "Northern Mariana Islands", "MS": "Montserrat", "MR": "Mauritania", "IM": "Isle of Man", "UG": "Uganda", "TZ": "Tanzania", "MY": "Malaysia", "MX": "Mexico", "IL": "Israel", "FR": "France", "IO": "British Indian Ocean Territory", "SH": "Saint Helena", "FI": "Finland", "FJ": "Fiji", "FK": "Falkland Islands", "FM": "Micronesia", "FO": "Faroe Islands", "NI": "Nicaragua", "NL": "Netherlands", "NO": "Norway", "NA": "Namibia", "VU": "Vanuatu", "NC": "New Caledonia", "NE": "Niger", "NF": "Norfolk Island", "NG": "Nigeria", "NZ": "New Zealand", "NP": "Nepal", "NR": "Nauru", "NU": "Niue", "CK": "Cook Islands", "XK": "Kosovo", "CI": "Ivory Coast", "CH": "Switzerland", "CO": "Colombia", "CN": "China", "CM": "Cameroon", "CL": "Chile", "CC": "Cocos Islands", "CA": "Canada", "CG": "Republic of the Congo", "CF": "Central African Republic", "CD": "Democratic Republic of the Congo", "CZ": "Czech Republic", "CY": "Cyprus", "CX": "Christmas Island", "CR": "Costa Rica", "CW": "Curacao", "CV": "Cape Verde", "CU": "Cuba", "SZ": "Swaziland", "SY": "Syria", "SX": "Sint Maarten", "KG": "Kyrgyzstan", "KE": "Kenya", "SS": "South Sudan", "SR": "Suriname", "KI": "Kiribati", "KH": "Cambodia", "KN": "Saint Kitts and Nevis", "KM": "Comoros", "ST": "Sao Tome and Principe", "SK": "Slovakia", "KR": "South Korea", "SI": "Slovenia", "KP": "North Korea", "KW": "Kuwait", "SN": "Senegal", "SM": "San Marino", "SL": "Sierra Leone", "SC": "Seychelles", "KZ": "Kazakhstan", "KY": "Cayman Islands", "SG": "Singapore", "SE": "Sweden", "SD": "Sudan", "DO": "Dominican Republic", "DM": "Dominica", "DJ": "Djibouti", "DK": "Denmark", "VG": "British Virgin Islands", "DE": "Germany", "YE": "Yemen", "DZ": "Algeria", "US": "United States", "UY": "Uruguay", "YT": "Mayotte", "UM": "United States Minor Outlying Islands", "LB": "Lebanon", "LC": "Saint Lucia", "LA": "Laos", "TV": "Tuvalu", "TW": "Taiwan", "TT": "Trinidad and Tobago", "TR": "Turkey", "LK": "Sri Lanka", "LI": "Liechtenstein", "LV": "Latvia", "TO": "Tonga", "LT": "Lithuania", "LU": "Luxembourg", "LR": "Liberia", "LS": "Lesotho", "TH": "Thailand", "TF": "French Southern Territories", "TG": "Togo", "TD": "Chad", "TC": "Turks and Caicos Islands", "LY": "Libya", "VA": "Vatican", "VC": "Saint Vincent and the Grenadines", "AE": "United Arab Emirates", "AD": "Andorra", "AG": "Antigua and Barbuda", "AF": "Afghanistan", "AI": "Anguilla", "VI": "U.S. Virgin Islands", "IS": "Iceland", "IR": "Iran", "AM": "Armenia", "AL": "Albania", "AO": "Angola", "AQ": "Antarctica", "AS": "American Samoa", "AR": "Argentina", "AU": "Australia", "AT": "Austria", "AW": "Aruba", "IN": "India", "AX": "Aland Islands", "AZ": "Azerbaijan", "IE": "Ireland", "ID": "Indonesia", "UA": "Ukraine", "QA": "Qatar", "MZ": "Mozambique"}
 inv_country_code_dict = {v: k for k, v in country_code_dict.items()}
+
+support_email = os.environ.get("SUPPORT_EMAIL")
+support_phone_number = os.environ.get("SUPPORT_PHONE_NUMBER")
+login_url = os.environ.get("LOGIN_URL")
 
 
 def receipt_webhook():
@@ -129,15 +135,46 @@ def onboarding(country, email, amount, order_number, ticket_id, destination, exp
     address = req_data['default_address']['address1']
     city = req_data['default_address']['city']
     state = req_data['default_address']['address2']
-    country = req_data['default_address']['country']
+    customer_country = req_data['default_address']['country']
+    customer_country_code = inv_country_code_dict[customer_country]
     zipcode = req_data['default_address']['zip']
     phone = req_data['default_address']['phone']
     company_name = req_data['default_address']['company']
 
     # step 2 : Create Card
-    card = Card.create(username= account_number, useralias= account_number, uipass= passcode, email= email, sip_buddy= 1, lock_pin= pin, country= country_code, expirationdate= expiry_date, enableexpire= '1', firstname= firstname, lastname= lastname, address= address, city= city, state= state, zipcode= zipcode, phone= phone, company_name= company_name)
+    card = Card.create(username= account_number, useralias= account_number, uipass= passcode, email= email, sip_buddy= 1, lock_pin= pin, country= customer_country_code, expirationdate= expiry_date, enableexpire= '1', firstname= firstname, lastname= lastname, address= address, city= city, state= state, zipcode= zipcode, phone= phone, company_name= company_name, tariff= country)
     print(card.username)       #
     add_ticket_comment("Card created with id: " + str(card.id) + " and username: " + account_number + " and country: " + country, order_number, ticket_id)
+
+    if not card.email:
+        msg = Message('Order {} fullfillment in progress...'.format(order_number), recipients=[email, support_email])
+
+        customer_ticket = Ticket.create(
+                                    creationdate = str(datetime.datetime.now()),
+                                    creator = 2,
+                                    creator_type = 0,
+                                    description = "Oboarding issue - card not found. check in A2B - card # " + card.username,
+                                    id_component = 7,
+                                    priority = 3,
+                                    status = 0,
+                                    title = "Oboarding issue - " + str(order_number)
+                                    )
+
+        msg.body = 'Our fulfillment team is currently processing your request. We will email you soon once the order is fulfilled.'
+        msg.html = '<p>Hello {} {} </p> <h1>Your Order # {} is being processed.</h1> <p>Our fulfillment team is currently processing your request.</p>  <p>You will recieve an email soon once the order is fulfilled.</p>  <p>   </p>  <p> If you have any questions, please contact us on phone: {} or email us at {}</p> <p>Thank you,<br>Access Number<br>Online Store</p>'.format(firstname, lastname, order_number, support_phone_number, support_email)
+        mail.send(msg)
+        add_ticket_comment("Order fullfillment in progress email for username: " + account_number + " sent to customer's email : " + email, order_number, ticket_id)
+
+        add_ticket_comment("Our fulfillment team is currently processing your request. We will email you soon once the order is fulfilled to your email at" + email, order_number, str(customer_ticket.id))
+        add_ticket_comment("New support ticket created for this issue with ID # " + str(customer_ticket.id) + " sent to customer's email : " + email, order_number, ticket_id)
+    else:
+        access_number = "+" + card.username
+        msg = Message('Order {} fulfilled successfully'.format(order_number), recipients=['grkrishna_mca@yahoo.com'])
+        msg.body = 'Order {} fulfilled.'.format(order_number)
+        msg.html = '''<p>Hello {} {} </p> <h4>Order # {} is fulfilled successfully.</h4> <h3>Your Access Number : {} </h3> <h4>Incoming calls to your access number will be delivered to your phone {} as requested. </h4> <p>   </p>  <p>Your access number account details are provided below</p> <p>username : {}</p> <p>password : {}</p> <p>login url : {}</p> <p>Once logged in, you will be able to change your password,check account details / balance / call rates / call history and create support tickets. <p> If you have any questions, please contact us on phone: {} or email us at {}</p> <p>Thank you,<br>Access Number<br>Online Store</p>'''.format(firstname, lastname, order_number, access_number, destination, card.useralias, card.uipass, login_url, support_phone_number, support_email)
+        mail.send(msg)
+        add_ticket_comment("Order fullfillment completed email for username: " + account_number + " sent to customer's email : " + str(card.email), order_number, ticket_id)
+
 
     query_id_country = Country.select(Country.id).where(Country.countryname == country)
     id_country = query_id_country.execute()
@@ -180,9 +217,9 @@ def onboarding(country, email, amount, order_number, ticket_id, destination, exp
     did_destination_2 = DidDestination.create(destination= stripped_destination, priority= 2, id_cc_card= card.id, id_cc_did= did.id, activated= 1, voip_call= 0, validated= 0)
 
     add_ticket_comment("DiD Destinations created - did_destination_1: " + str(did_destination_1.destination) + " and did_destination_2:  " + str(did_destination_2.destination), order_number, ticket_id)
-    # step 4 :  add £1.00 credit in a2billing
+    # step 4 :  add credit in a2billing
     topup_amount =  amount
-    buy_topup(account_number, topup_amount, order_number, ticket_id)
+    buy_topup(account_number, email, topup_amount, order_number, ticket_id)
     # step 5 :  email and sms customer on completion of the order
     return ('Onboarding Completed Successfully', 200)
 
@@ -190,24 +227,52 @@ def onboarding(country, email, amount, order_number, ticket_id, destination, exp
 
 
 
-def buy_topup(account_number, topup_amount, order_number, ticket_id):
+def buy_topup(account_number, email, topup_amount, order_number, ticket_id):
     # ***** test this code for buying topup *****
         account_number = str(account_number)
         credit = topup_amount
+        access_number = "+" + account_number
         # Get Card(vat, credit) - using useraliad only for testing
         query = Card.select(Card.credit, Card.id).where(Card.username == account_number)
         card = query.execute()
 
         if not card:
-            return Response('Card not found.', 400)
+
+            customer_ticket = Ticket.create(
+                                    creationdate = str(datetime.datetime.now()),
+                                    creator = 2,
+                                    creator_type = 0,
+                                    description = "Topup issue - card not found. check in A2B - card # " + account_number,
+                                    id_component = 7,
+                                    priority = 3,
+                                    status = 0,
+                                    title = "Topup issue - " + str(order_number)
+                                    )
+
+            msg = Message('Order {} fullfillment - Discrepancy observed - Need more information - Ticket # {}'.format(order_number, str(customer_ticket.id)), recipients=[email, support_email])
+            msg.body = 'Our fulfillment team has observed a discrepancy while processing your request.'
+            msg.html = '<p>Hello</p>  <h1>Your Order # {} is being processed.</h1> <p>Our fulfillment team has observed a discrepancy while processing your request.</p>  <h4>Phone number you have requested to top up does not exist in our system.</h4>  <p>Please check the same in your order and please contact our support team via phone: {} or email at {} to update your order.</p> <p>Thank you,<br>Access Number<br>Online Store</p>'.format(order_number, support_phone_number, support_email)
+            mail.send(msg)
+
+            add_ticket_comment("Order fullfillment - Discrepancy observed - Need more information from username: " + account_number + " sent to customer's email : " + email, order_number, str(customer_ticket.id))
+            add_ticket_comment("New support ticket created for this issue with ID # " + str(customer_ticket.id) + " sent to customer's email : " + email, order_number, ticket_id)
+            #return Response('Card not found.', 400)
         else:
             #credit = float(request.json['credit'])
             print(card[0].id)
             print(card[0].credit)
             prev_credit = card[0].credit
             new_balance = prev_credit + float(credit)
+            firstname = card[0].firstname
+            lastname = card[0].lastname
             Card.update(credit=new_balance).where(Card.username == account_number).execute()
             add_ticket_comment("Top-up Successfull on card with username  " + account_number + " Previous Balance:  " + str(prev_credit) + " New Balance:  " + str(new_balance) , order_number, ticket_id)
+            if prev_credit != 0.0:
+                msg = Message('Order {} fulfilled successfully'.format(order_number), recipients=['grkrishna_mca@yahoo.com'])
+                msg.body = 'Order {} fulfilled.'.format(order_number)
+                msg.html = '''<p>Hello {} {} </p> <h4>Order # {} is fulfilled successfully.</h4> <h4>Your Access Number : {} is topped up with {} GBP</h4> <p>Previous Balance:  {} GBP </p> <p>   </p>  <p>Current Balance:  {} GBP  </p> <p> If you have any questions, please contact us on phone: {} or email us at {}</p> <p>Thank you,<br>Access Number<br>Online Store</p>'''.format(firstname, lastname, order_number, access_number, credit, prev_credit, new_balance, support_phone_number, support_email)
+                mail.send(msg)
+            add_ticket_comment("Order fullfillment completed email for username: " + account_number + " sent to customer's email : " + email, order_number, ticket_id)
 
             # add logrefill
             logrefill = Logrefill(card=card[0].id, description=account_number, date=str(datetime.datetime.now()), credit=credit, refill_type=0)
@@ -554,3 +619,32 @@ def extra_charge(card_id):
         'charge_id': charge.id
     }
     return jsonify(data)
+
+
+
+@app.route('/twiml_routing/v0/get_email/<to>', methods=['POST'])
+def get_email(to):
+    print(to)
+    called_number = to.lstrip('+')
+    # Get Card
+    query = Card.select(Card.email, Card.credit).where(Card.useralias == called_number)
+    print(query)
+    card = query.execute()
+    if not card and not card[0]:
+        return Response('Card not found.', 400)
+
+    amount = 0.02
+    prev_credit = card[0].credit
+    email_address = card[0].email
+    new_balance = prev_credit - amount
+
+    print(prev_credit)
+    print(amount)
+    print(new_balance)
+    Card.update(credit=new_balance).where(Card.useralias == called_number).execute()
+
+    # prepare dictionary for JSON return
+    data = {
+        'email': email_address
+    }
+    return email_address
