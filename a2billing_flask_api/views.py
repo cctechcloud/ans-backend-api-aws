@@ -28,7 +28,8 @@ support_email = os.environ.get("SUPPORT_EMAIL")
 support_phone_number = os.environ.get("SUPPORT_PHONE_NUMBER")
 portal_url = os.environ.get("PORTAL_URL")
 
-shopify_secret_key = os.environ.get("SHOPIFY_SECRET_KEY")
+#shopify_secret_key = os.environ.get("SHOPIFY_SECRET_KEY")
+shopify_secret_key = b'877e81cd18f9d8cd2d5bdf72bc82ddc33f26678507895bf81c853132f0ae6725'
 
 # function to verify web hook data
 def verify_webhook(data, hmac_header):
