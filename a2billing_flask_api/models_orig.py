@@ -1850,3 +1850,17 @@ class CountryServer(BaseModel):
 
     class Meta:
         db_table = 'country_server'
+
+
+class VoicemailUsers(BaseModel):
+    uniqueid = IntegerField(primary_key=True)
+    customer_id = IntegerField()
+    context = CharField()
+    email = CharField()
+    mailbox = CharField()
+    attach = CharField()
+    delete = CharField()
+    sendvoicemail = CharField()
+
+    class Meta:
+        db_table = 'voicemail_users'

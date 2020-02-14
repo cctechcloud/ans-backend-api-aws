@@ -1826,3 +1826,17 @@ class Note(db.Model):
 
     class Meta:
         db_table = 'note'
+
+
+class VoicemailUsers(db.Model):
+    uniqueid = IntegerField(primary_key=True)
+    customer_id = IntegerField()
+    context = CharField()
+    email = CharField()
+    mailbox = CharField()
+    attach = CharField()
+    delete = CharField()
+    sendvoicemail = CharField()
+
+    class Meta:
+        db_table = 'voicemail_users'
