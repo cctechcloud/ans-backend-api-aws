@@ -67,10 +67,10 @@ def onboarding(country, email, amount, order_number, ticket_id, destination, exp
     # Purchase the phone number from Twilio
     incoming_phone_number = client.incoming_phone_numbers \
                 .create(phone_number=available_phone_number, address_sid=os.environ.get("TWILIO_ADDRESS_SID")) \
-                .update(trunk_sid=os.environ.get("TWILIO_TRUNK_SID"))
+                .update(voice_application_sid=os.environ.get("TWILIO_TWIMLAPP_SID"))
     # *****  create A2B card for that phone number, create DiD, create DidDestination  ******
     pin = random.randint(1000,9999)
-    passcode = email + str(pin)
+    passcode = 'ANS' + email + str(pin)
 
     firstname = req_data['customer']['default_address']['first_name']
     lastname = req_data['customer']['default_address']['last_name']
@@ -236,13 +236,14 @@ def buy_topup(account_number, email, topup_amount, order_number, ticket_id):
 
             account_sid = os.environ.get("TWILIO_ACCOUNT_SID")
             auth_token = os.environ.get("TWILIO_AUTH_TOKEN")
-            trunk_sid = os.environ.get("TWILIO_TRUNK_SID")
+            #trunk_sid = os.environ.get("TWILIO_TRUNK_SID")
+            twimlapp_sid = os.environ.get("TWILIO_TWIMLAPP_SID")
             default_address_sid = "Address SID for default address"
             client = Client(account_sid, auth_token)
             incoming_phone_number_list = client.incoming_phone_numbers.list(phone_number=account_number,limit=2)
             # dis-associate sip trunk with access number
             for record in incoming_phone_number_list:
-                incoming_phone_number = client.incoming_phone_numbers(record.sid).update(trunk_sid=trunk_sid)
+                incoming_phone_number = client.incoming_phone_numbers(record.sid).update(voice_application_sid=twimlapp_sid)
 
             add_ticket_comment("Top-up Successfull on card with username  " + account_number + " Previous Balance:  " + str(prev_credit) + " New Balance:  " + str(new_balance) , order_number, ticket_id)
             if prev_credit != 0.0:
