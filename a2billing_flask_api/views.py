@@ -17,6 +17,8 @@ import random
 import os
 from app import mail
 from flask_mail import Mail, Message
+import boto3
+from botocore.exceptions import ClientError
 
 
 
@@ -80,7 +82,8 @@ def onboarding(country, email, amount, order_number, ticket_id, destination, exp
     customer_country = req_data['customer']['default_address']['country']
     customer_country_code = inv_country_code_dict[customer_country]
     zipcode = req_data['customer']['default_address']['zip']
-    phone = req_data['customer']['default_address']['phone']
+    #phone = req_data['customer']['default_address']['phone']
+    phone = destination
     company_name = req_data['customer']['default_address']['company']
 
     # step 2 : Create Card
@@ -88,19 +91,16 @@ def onboarding(country, email, amount, order_number, ticket_id, destination, exp
     print(card.username)       #
     add_ticket_comment("Card created with id: " + str(card.id) + " and username: " + account_number + " and country: " + country, order_number, ticket_id)
     sipbuddy = SipBuddies.create(username= account_number, accountcode= account_number, name = account_number, secret= passcode, id_cc_card= card.id, context= 'a2billing', regexten= '', callerid= '', fromuser= '', fromdomain= '', host= '', insecure= '', mailbox= '', md5secret= '', deny= '', mask= '', allow= '', musiconhold= '', fullcontact= '', setvar= '')
+    '''
     message = client.messages.create(
-             body="""Dear Customer, Greetings from Access Number Store. Your Access Number is +{}
-                    Please download the below recommended softphone app on to this phone.
-                    DOWNLOAD LINPHONE FOR IPHONE
-                    https://itunes.apple.com/us/app/linphone/id360065638?mt=8
-                    DOWNLOAD LINPHONE FOR ANDROID
-                    https://play.google.com/store/apps/details?id=org.linphone&hl=en_GB
-                    This message box is unmonitored, please do not reply.
-                    Thank you.""".format(account_number),
+             body="Dear Customer, Greetings from Access Number Store. Order # {}. Your Access Number is +{} For receiving calls, please download the below-recommended softphone app and Create Account using your mobile number {}. LINPHONE FOR IPHONE https://itunes.apple.com/us/app/linphone/id360065638?mt=8  LINPHONE FOR ANDROID https://play.google.com/store/apps/details?id=org.linphone&hl=en_GB".format(order_number, account_number, phone),
              from_=os.environ.get("SMS_PHONE_NUMBER"),
              to=destination
     )
-    add_ticket_comment("SMS sent to Customer on his destination mobile number : " + destination + " for order number ", order_number, ticket_id)
+    '''
+    message= "Dear Customer, Greetings from Access Number Store. Order # {}. Your Access Number is +{} For receiving calls, please download the below-recommended softphone app and Create Account using your mobile number {}. LINPHONE FOR IPHONE https://itunes.apple.com/us/app/linphone/id360065638?mt=8  LINPHONE FOR ANDROID https://play.google.com/store/apps/details?id=org.linphone&hl=en_GB".format(order_number, account_number, phone)
+    send_sms(phone, message)
+    add_ticket_comment("SMS sent to Customer on his destination mobile number : " + phone + " for order number ", order_number, ticket_id)
 
     if not card.email:
         msg = Message('Order {} fullfillment in progress...'.format(order_number), recipients=[email, support_email])
@@ -115,26 +115,57 @@ def onboarding(country, email, amount, order_number, ticket_id, destination, exp
                                     status = 0,
                                     title = "Oboarding issue - " + str(order_number)
                                     )
-
+        '''
         msg.body = 'Our fulfillment team is currently processing your request. We will email you soon once the order is fulfilled.'
         msg.html = '<p>Hello {} {} </p> <h1>Your Order # {} is being processed.</h1> <p>Our fulfillment team is currently processing your request.</p>  <p>You will recieve an email soon once the order is fulfilled.</p>  <p>   </p>  <p> If you have any questions, please contact us on phone: {} or email us at {}</p> <p>Thank you,<br>Access Number<br>Online Store</p>'.format(firstname, lastname, order_number, support_phone_number, support_email)
         mail.send(msg)
+        '''
+        email_subject = 'Your Order # {} is being processed'.format(order_number)
+        email_body_text = 'Dear Customer, Greetings from Access Number Store. Your Order # {} is being processed. You will recieve an email soon once the order is fulfilled.  If you have any questions meanwhile, please contact us on phone: {} or email us at {}'.format(order_number, support_phone_number, support_email)
+        email_body_html = """<html>
+        <head></head>
+        <body>
+          <p>'Dear Customer, Greetings from Access Number Store. Your Order # {} is being processed. You will recieve an email soon once the order is fulfilled.  If you have any questions meanwhile, please contact us on phone: {} or email us at {} </p>'
+        </body>
+        </html>
+        """.format(order_number, support_phone_number, support_email)
+        send_email(email, email_subject, email_body_text, email_body_html)
         add_ticket_comment("Order fullfillment in progress email for username: " + account_number + " sent to customer's email : " + email, order_number, ticket_id)
 
         add_ticket_comment("Our fulfillment team is currently processing your request. We will email you soon once the order is fulfilled to your email at" + email, order_number, str(customer_ticket.id))
         add_ticket_comment("New support ticket created for this issue with ID # " + str(customer_ticket.id) + " sent to customer's email : " + email, order_number, ticket_id)
     else:
         access_number = "+" + card.username
-        msg = Message('Order {} fulfilled successfully'.format(order_number), recipients=[card.email])
-        msg.body = 'Order {} fulfilled.'.format(order_number)
-        msg.html = '''<p>Hello {} {} </p> <h4>Order # {} is fulfilled successfully.</h4> <h3>Your Access Number : {} </h3> <h4>Incoming calls to your access number will be delivered to softphone app on your phone {} as requested. </h4>
-                            <p>Please download the below recommended softphone app on to your phone. Once downloaded, CREATE ACCOUNT in the app.
-                            DOWNLOAD LINPHONE FOR IPHONE
-                            https://itunes.apple.com/us/app/linphone/id360065638?mt=8
-                            DOWNLOAD LINPHONE FOR ANDROID
-                            https://play.google.com/store/apps/details?id=org.linphone&hl=en_GB </p>
-                            <p>Your access number account details are provided below</p> <p>username : {}</p> <p>password : {}</p> <p> You can sign in to customer portal using above credentials after clicking on Portal in the following url : {}</p> <p>Once logged in, you will be able to change your password,check account details / balance / call rates / call history and create support tickets. <p> If you have any questions, please contact us on phone: {} or email us at {}</p> <p>Thank you,<br>Access Number<br>Online Store</p>'''.format(firstname, lastname, order_number, access_number, destination, card.useralias, card.uipass, portal_url, support_phone_number, support_email)
-        mail.send(msg)
+        #msg = Message('Order {} fulfilled successfully'.format(order_number), recipients=[card.email])
+        #msg.body = 'Order {} fulfilled.'.format(order_number)
+        email_subject = 'Order {} fulfilled successfully'.format(order_number)
+        email_body_text = '''Hello {} {}, Greetings from Access Number Store. Order # {} fulfilled successfully. Your Access Number : {}. Please download the below recommended softphone app on to your phone. Once downloaded, CREATE ACCOUNT in the app.
+        DOWNLOAD LINPHONE FOR IPHONE
+        https://itunes.apple.com/us/app/linphone/id360065638?mt=8
+        DOWNLOAD LINPHONE FOR ANDROID
+        https://play.google.com/store/apps/details?id=org.linphone&hl=en_GB </p>
+        Your access number account details are provided below username : {} password : {}   You can sign in to customer portal using above credentials after clicking on Portal in the following url : {} Once logged in, you will be able to check account details / balance / call rates / call history and create support tickets. <p> If you have any questions, please contact us on phone: {} or email us at {} Thank you, Access Number Store '''.format(firstname, lastname, order_number, access_number, destination, card.useralias, card.uipass, portal_url, support_phone_number, support_email)
+        email_body_html = '''<html>
+                             <head>Order # {} is fulfilled successfully.</head>
+                             <body>
+                               <p>Hello {} {} </p> <h3>Your Access Number : {} </h3>
+                               <h4>Incoming calls to your access number will be delivered to softphone app on your phone {} as requested.</h4>
+                               <p>Please download the below recommended softphone app on to your phone. Once downloaded, CREATE ACCOUNT in the app.</p>
+                                 <p>DOWNLOAD LINPHONE FOR IPHONE</p>
+                                 <p>https://itunes.apple.com/us/app/linphone/id360065638?mt=8 </p>
+                                 <p>DOWNLOAD LINPHONE FOR ANDROID</p>
+                                 <p>https://play.google.com/store/apps/details?id=org.linphone&hl=en_GB </p>
+                                 <p>Your access number account details are provided below</p>
+                                 <p>username : {}</p>
+                                 <p>password : {}</p>
+                                 <p>You can sign in to customer portal using above credentials after clicking on Portal in the following url : {}</p>
+                                 <p>Once logged in, you will be able to check account details / balance / call rates / call history and create support tickets.</p>
+                                 <p> If you have any questions, please contact us on phone: {} or email us at {}</p>
+                                 <p>Thank you,<br>Access Number Store</p>
+                            </body>
+                            </html>'''.format(order_number, firstname, lastname, access_number, destination, card.useralias, card.uipass, portal_url, support_phone_number, support_email)
+        send_email(email, email_subject, email_body_text, email_body_html)
+
         add_ticket_comment("Order fullfillment completed email for username: " + account_number + " sent to customer's email : " + str(card.email), order_number, ticket_id)
 
 
@@ -187,7 +218,13 @@ def onboarding(country, email, amount, order_number, ticket_id, destination, exp
     vm = VoicemailUsers.create(email= email, mailbox= account_number, delete = 'yes', context= 'default')
     add_ticket_comment("Voicemailbox created for user " + str(account_number), order_number, ticket_id)
 
-    return ('Onboarding Completed Successfully', 200)
+    # step 7 :  create SIP Crendetial in Twilio
+    credential_list = os.environ.get("TWILIO_SIPCREDENTIALLIST_SID")
+    credential = client.sip.credential_lists(credential_list) \
+                       .credentials \
+                       .create(username=account_number, password=passcode)
+    print("Onboarding Completed Successfully")
+    return
 
 
 
@@ -199,7 +236,7 @@ def buy_topup(account_number, email, topup_amount, order_number, ticket_id):
         credit = topup_amount
         access_number = "+" + account_number
         # Get Card(vat, credit) - using useraliad only for testing
-        query = Card.select(Card.credit, Card.id).where(Card.username == account_number)
+        query = Card.select(Card.credit, Card.id, Card.firstname, Card.lastname, Card.phone).where(Card.username == account_number)
         card = query.execute()
 
         if not card:
@@ -214,11 +251,27 @@ def buy_topup(account_number, email, topup_amount, order_number, ticket_id):
                                     status = 0,
                                     title = "Topup issue - " + str(order_number)
                                     )
-
+            '''
             msg = Message('Order {} fullfillment - Discrepancy observed - Need more information - Ticket # {}'.format(order_number, str(customer_ticket.id)), recipients=[email, support_email])
             msg.body = 'Our fulfillment team has observed a discrepancy while processing your request.'
             msg.html = '<p>Hello</p>  <h1>Your Order # {} is being processed.</h1> <p>Our fulfillment team has observed a discrepancy while processing your request.</p>  <h4>Phone number you have requested to top up does not exist in our system.</h4>  <p>Please check the same in your order and please contact our support team via phone: {} or email at {} to update your order.</p> <p>Thank you,<br>Access Number<br>Online Store</p>'.format(order_number, support_phone_number, support_email)
             mail.send(msg)
+            '''
+            email_subject = 'Order # {} fullfillment - Discrepancy observed - Need more information - Ticket # {}'.format(order_number, str(customer_ticket.id))
+            email_body_text = 'Dear Customer, Greetings from Access Number Store. Order # {}. Our fulfillment team has observed a discrepancy while processing your request. Access Number +{} you have requested to top up does not exist in our system. Please check your Access Number from your order and contact our support team via phone: {} or email at {} to update your order. Thank You.'.format(order_number, account_number, support_phone_number, support_email)
+            email_body_html = """<html>
+            <head>Order # {}</head>
+            <body>
+              <p>Dear Customer,</p>
+              <p>Greetings from Access Number Store. </p>
+              <p>Our fulfillment team has observed a discrepancy while processing your request.</p>
+              <p> Access Number +{} you have requested to top up does not exist in our system. </p>
+              <p>Please check your Access Number from your order and contact our support team via phone: {} or email at {} to update your order.</p>
+              <p> Thank You.</p>
+            </body>
+            </html>
+            """.format(order_number, account_number, support_phone_number, support_email)
+            send_email(email, email_subject, email_body_text, email_body_html)
 
             add_ticket_comment("Order fullfillment - Discrepancy observed - Need more information from username: " + account_number + " sent to customer's email : " + email, order_number, str(customer_ticket.id))
             add_ticket_comment("New support ticket created for this issue with ID # " + str(customer_ticket.id) + " sent to customer's email : " + email, order_number, ticket_id)
@@ -227,11 +280,13 @@ def buy_topup(account_number, email, topup_amount, order_number, ticket_id):
             #credit = float(request.json['credit'])
             print(card[0].id)
             print(card[0].credit)
+            print(card[0].phone)
             prev_credit = card[0].credit
             new_balance = prev_credit + float(credit)
             firstname = card[0].firstname
             lastname = card[0].lastname
-            revised_expiry_date = str(datetime.datetime.now() + datetime.timedelta(28))
+            phone = card[0].phone
+            revised_expiry_date = str(datetime.datetime.now() + datetime.timedelta(27))
             Card.update(credit=new_balance,expirationdate=revised_expiry_date).where(Card.username == account_number).execute()
 
             account_sid = os.environ.get("TWILIO_ACCOUNT_SID")
@@ -247,11 +302,40 @@ def buy_topup(account_number, email, topup_amount, order_number, ticket_id):
 
             add_ticket_comment("Top-up Successfull on card with username  " + account_number + " Previous Balance:  " + str(prev_credit) + " New Balance:  " + str(new_balance) , order_number, ticket_id)
             if prev_credit != 0.0:
-                msg = Message('Order {} fulfilled successfully'.format(order_number), recipients=['grkrishna_mca@yahoo.com'])
-                msg.body = 'Order {} fulfilled.'.format(order_number)
-                msg.html = '''<p>Hello {} {} </p> <h4>Order # {} is fulfilled successfully.</h4> <h4>Your Access Number : {} is topped up with {} GBP</h4> <p>Previous Balance:  {} GBP </p> <p>   </p>  <p>Current Balance:  {} GBP  </p> <p> If you have any questions, please contact us on phone: {} or email us at {}</p> <p>Thank you,<br>Access Number<br>Online Store</p>'''.format(firstname, lastname, order_number, access_number, credit, prev_credit, new_balance, support_phone_number, support_email)
-                mail.send(msg)
-            add_ticket_comment("Order fullfillment completed email for username: " + account_number + " sent to customer's email : " + email, order_number, ticket_id)
+
+                #msg = Message('Order {} fulfilled successfully'.format(order_number), recipients=[email])
+                #msg.body = 'Order {} fulfilled.'.format(order_number)
+
+                #msg.html = '''<p>Hello {} {} </p> <h4>Order # {} is fulfilled successfully.</h4> <h4>Your Access Number : {} is topped up with {} GBP</h4> <p>Previous Balance:  {} GBP </p> <p>   </p>  <p>Current Balance:  {} GBP  </p> <p> If you have any questions, please contact us on phone: {} or email us at {}</p> <p>Thank you,<br>Access Number<br>Online Store</p>'''.format(firstname, lastname, order_number, access_number, credit, prev_credit, new_balance, support_phone_number, support_email)
+                #mail.send(msg)
+                email_subject = 'Order {} fulfilled successfully'.format(order_number)
+                email_body_text = 'Dear Customer, Greetings from Access Number Store.Order # {} fulfilled successfully. Your Access Number: +{} is topped up with {} GBP.'.format(order_number, account_number, credit)
+                email_body_html = """<html>
+                <head>Order # {} fulfilled successfully.</head>
+                <body>
+                  <p>Dear Customer,</p>
+                  <p>Greetings from Access Number Store. </p>
+                  <p>Your Access Number: +{} is topped up with {} GBP.</p>
+                  <p>Thank you for using our service.</p>
+                </body>
+                </html>
+                """.format(order_number, account_number, credit)
+                print("email address is: " + email )
+                send_email(email, email_subject, email_body_text, email_body_html)
+
+
+                '''
+                message = client.messages.create(
+                         body="""Dear Customer, Greetings from Access Number Store. Order # {} is fulfilled successfully. Your Access Number : +{} is topped up with {} GBP. Previous Balance:  {} GBP Current Balance:  {} GBP. We hope you continue to enjoy our service.Thank you.""".format(order_number, account_number, credit, prev_credit, new_balance),
+                         from_=os.environ.get("SMS_PHONE_NUMBER"),
+                         to=phone
+                )
+                '''
+                message= "Dear Customer, Greetings from Access Number Store.Order # {}. Your Access Number: +{} is topped up with {} GBP.".format(order_number, account_number, credit)
+                send_sms(phone, message)
+                add_ticket_comment("SMS sent to Customer on his destination mobile number : " + phone + " for order number ", order_number, ticket_id)
+                add_ticket_comment("Order fullfillment completed email for username: " + account_number + " sent to customer's email : " + email, order_number, ticket_id)
+
 
             # add logrefill
             logrefill = Logrefill(card=card[0].id, description=account_number, date=str(datetime.datetime.now()), credit=credit, refill_type=0)
@@ -287,7 +371,20 @@ def add_ticket_comment(message, order_number, ticket_id):
 # Home page route for site status
 @app.route('/')
 def homepage():
-    return 'Welcome to Access Number Store Customer API!'
+    #send_sms('+447412678577', 'This is a test SMS from AWS')
+    message = """<html>
+    <head></head>
+    <body>
+      <h1>Amazon SES Test (SDK for Python)</h1>
+      <p>This email was sent with
+        <a href='https://aws.amazon.com/ses/'>Amazon SES</a> using the
+        <a href='https://aws.amazon.com/sdk-for-python/'>
+          AWS SDK for Python (Boto)</a>.</p>
+    </body>
+    </html>
+                """
+    #send_email('sales.accessnumberstore@gmail.com', message)
+    return 'Welcome to Access Number Store Customer Onboarding API!'
 
 
 
@@ -332,7 +429,8 @@ def paid_order():
                                     id_ticket = ticket[0].id
                                 )
              '''
-            return ('Skipping further processing', 200)
+            print("Webhook Retransmission - Skipping further Processing of Order number " + order_number )
+            return Response(status = 200)
         line_items_list = req_data['line_items']
         email = req_data['email']
 
@@ -374,4 +472,103 @@ def paid_order():
 
             Ticket.update(status=1,priority=1).where(Ticket.title == str(order_number)).execute()
 
-    return ('Paid Order fulfilled', 200)
+        return Response(status = 200)
+
+
+# function to send sms
+def send_sms(phone_number, message):
+        print(" **** ready to send SMS ****")
+        # Initialize SNS client for Ireland region
+        session = boto3.Session(
+            region_name="eu-west-1"
+        )
+        sns_client = session.client('sns')
+        # Send message
+        response = sns_client.publish(
+            PhoneNumber=phone_number,
+            Message=message,
+            MessageAttributes={
+                'AWS.SNS.SMS.SenderID': {
+                    'DataType': 'String',
+                    'StringValue': 'ANS'
+                },
+                'AWS.SNS.SMS.SMSType': {
+                    'DataType': 'String',
+                    'StringValue': 'Transactional'
+                }
+            }
+        )
+        return (200)
+
+
+# function to send email
+def send_email(recipient, email_subject, email_body_text, email_body_html):
+    # Replace sender@example.com with your "From" address.
+    # This address must be verified with Amazon SES.
+    SENDER = "Access Number Store <no-reply@accessnumberstore.com>"
+
+    # Replace recipient@example.com with a "To" address. If your account
+    # is still in the sandbox, this address must be verified.
+    RECIPIENT = recipient
+
+    # Specify a configuration set. If you do not want to use a configuration
+    # set, comment the following variable, and the
+    # ConfigurationSetName=CONFIGURATION_SET argument below.
+    CONFIGURATION_SET = "ConfigSet"
+
+    # If necessary, replace us-west-2 with the AWS Region you're using for Amazon SES.
+    AWS_REGION = "eu-west-1"
+
+    # The subject line for the email.
+    SUBJECT = email_subject
+
+    # The email body for recipients with non-HTML email clients.
+    BODY_TEXT = (email_body_text
+                )
+
+    # The HTML body of the email.
+    BODY_HTML = email_body_html
+
+    # The character encoding for the email.
+    CHARSET = "UTF-8"
+
+    # Create a new SES resource and specify a region.
+    client = boto3.client('ses',region_name=AWS_REGION)
+
+    # Try to send the email.
+    try:
+        #Provide the contents of the email.
+        response = client.send_email(
+            Destination={
+                'ToAddresses': [
+                    RECIPIENT,
+                ],
+            },
+            Message={
+                'Body': {
+                    'Html': {
+                        'Charset': CHARSET,
+                        'Data': BODY_HTML,
+                    },
+                    'Text': {
+                        'Charset': CHARSET,
+                        'Data': BODY_TEXT,
+                    },
+                },
+                'Subject': {
+                    'Charset': CHARSET,
+                    'Data': SUBJECT,
+                },
+            },
+            Source=SENDER,
+            # If you are not using a configuration set, comment or delete the
+            # following line
+            #ConfigurationSetName=CONFIGURATION_SET,
+        )
+    # Display an error if something goes wrong.
+    except ClientError as e:
+        print(e.response['Error']['Message'])
+    else:
+        print("Email sent! Message ID:"),
+        print(response['MessageId'])
+    return (200)
