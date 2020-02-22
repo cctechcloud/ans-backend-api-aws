@@ -309,7 +309,7 @@ def buy_topup(account_number, email, topup_amount, order_number, ticket_id):
                 #msg.html = '''<p>Hello {} {} </p> <h4>Order # {} is fulfilled successfully.</h4> <h4>Your Access Number : {} is topped up with {} GBP</h4> <p>Previous Balance:  {} GBP </p> <p>   </p>  <p>Current Balance:  {} GBP  </p> <p> If you have any questions, please contact us on phone: {} or email us at {}</p> <p>Thank you,<br>Access Number<br>Online Store</p>'''.format(firstname, lastname, order_number, access_number, credit, prev_credit, new_balance, support_phone_number, support_email)
                 #mail.send(msg)
                 email_subject = 'Order {} fulfilled successfully'.format(order_number)
-                email_body_text = 'Dear Customer, Greetings from Access Number Store.Order # {} fulfilled successfully. Your Access Number: +{} is topped up with {} GBP.'.format(order_number, account_number, credit)
+                email_body_text = 'Dear Customer, Greetings from Access Number Store. Order # {} fulfilled successfully. Your Access Number: +{} is topped up with {} GBP.'.format(order_number, account_number, credit)
                 email_body_html = """<html>
                 <head>Order # {} fulfilled successfully.</head>
                 <body>
@@ -331,7 +331,7 @@ def buy_topup(account_number, email, topup_amount, order_number, ticket_id):
                          to=phone
                 )
                 '''
-                message= "Dear Customer, Greetings from Access Number Store.Order # {}. Your Access Number: +{} is topped up with {} GBP.".format(order_number, account_number, credit)
+                message= "Dear Customer, Greetings from Access Number Store. Order # {}. Your Access Number: +{} is topped up with {} GBP.".format(order_number, account_number, credit)
                 send_sms(phone, message)
                 add_ticket_comment("SMS sent to Customer on his destination mobile number : " + phone + " for order number ", order_number, ticket_id)
                 add_ticket_comment("Order fullfillment completed email for username: " + account_number + " sent to customer's email : " + email, order_number, ticket_id)
@@ -429,7 +429,7 @@ def paid_order():
                                     id_ticket = ticket[0].id
                                 )
              '''
-            print("Webhook Retransmission - Skipping further Processing of Order number " + order_number )
+            print("Webhook Retransmission - Skipping further Processing of Order number " + str(order_number) )
             return Response(status = 200)
         line_items_list = req_data['line_items']
         email = req_data['email']
