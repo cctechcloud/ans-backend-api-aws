@@ -98,7 +98,7 @@ def onboarding(country, email, amount, order_number, ticket_id, destination, exp
              to=destination
     )
     '''
-    message= "Dear Customer, Greetings from Access Number Store. Order # {}. Your Access Number is +{} For receiving calls, please download the below-recommended softphone app and Create Account using your mobile number {}. LINPHONE FOR IPHONE https://itunes.apple.com/us/app/linphone/id360065638?mt=8  LINPHONE FOR ANDROID https://play.google.com/store/apps/details?id=org.linphone&hl=en_GB".format(order_number, account_number, phone)
+    message= "Dear Customer, Greetings from Access Number Store. Order # {}. Your Access Number is +{} For receiving calls, please download the below-recommended softphone app and Create Account using your mobile number {}. Go to 'Settings'-> Your account -> ensure Push Notification is ON and Account enabled is ON. LINPHONE FOR IPHONE https://itunes.apple.com/us/app/linphone/id360065638?mt=8  LINPHONE FOR ANDROID https://play.google.com/store/apps/details?id=org.linphone&hl=en_GB".format(order_number, account_number, phone)
     send_sms(phone, message)
     add_ticket_comment("SMS sent to Customer on his destination mobile number : " + phone + " for order number ", order_number, ticket_id)
 
@@ -117,15 +117,15 @@ def onboarding(country, email, amount, order_number, ticket_id, destination, exp
                                     )
         '''
         msg.body = 'Our fulfillment team is currently processing your request. We will email you soon once the order is fulfilled.'
-        msg.html = '<p>Hello {} {} </p> <h1>Your Order # {} is being processed.</h1> <p>Our fulfillment team is currently processing your request.</p>  <p>You will recieve an email soon once the order is fulfilled.</p>  <p>   </p>  <p> If you have any questions, please contact us on phone: {} or email us at {}</p> <p>Thank you,<br>Access Number<br>Online Store</p>'.format(firstname, lastname, order_number, support_phone_number, support_email)
+        msg.html = '<p>Hello {} {} </p> <h1>Your Order # {} is being processed.</h1> <p>Our fulfillment team is currently processing your request.</p>  <p>You will recieve an email soon once the order is fulfilled.</p>  <p>   </p>  <p> If you have any questions, please contact us on email us at {}</p> <p>Thank you,<br>Access Number Store</p>'.format(firstname, lastname, order_number, support_phone_number, support_email)
         mail.send(msg)
         '''
         email_subject = 'Your Order # {} is being processed'.format(order_number)
-        email_body_text = 'Dear Customer, Greetings from Access Number Store. Your Order # {} is being processed. You will recieve an email soon once the order is fulfilled.  If you have any questions meanwhile, please contact us on phone: {} or email us at {}'.format(order_number, support_phone_number, support_email)
+        email_body_text = 'Dear Customer, Greetings from Access Number Store. Your Order # {} is being processed. You will recieve an email soon once the order is fulfilled.  If you have any questions meanwhile, please contact us through Portal or email us at {}'.format(order_number, support_phone_number, support_email)
         email_body_html = """<html>
         <head></head>
         <body>
-          <p>'Dear Customer, Greetings from Access Number Store. Your Order # {} is being processed. You will recieve an email soon once the order is fulfilled.  If you have any questions meanwhile, please contact us on phone: {} or email us at {} </p>'
+          <p>'Dear Customer, Greetings from Access Number Store. Your Order # {} is being processed. You will recieve an email soon once the order is fulfilled.  If you have any questions meanwhile, please contact us through Portal or email us at {} </p>'
         </body>
         </html>
         """.format(order_number, support_phone_number, support_email)
@@ -144,13 +144,15 @@ def onboarding(country, email, amount, order_number, ticket_id, destination, exp
         https://itunes.apple.com/us/app/linphone/id360065638?mt=8
         DOWNLOAD LINPHONE FOR ANDROID
         https://play.google.com/store/apps/details?id=org.linphone&hl=en_GB </p>
-        Your access number account details are provided below username : {} password : {}   You can sign in to customer portal using above credentials after clicking on Portal in the following url : {} Once logged in, you will be able to check account details / balance / call rates / call history and create support tickets. <p> If you have any questions, please contact us on phone: {} or email us at {} Thank you, Access Number Store '''.format(firstname, lastname, order_number, access_number, destination, card.useralias, card.uipass, portal_url, support_phone_number, support_email)
+        Your access number account details are provided below username : {} password : {}   You can sign in to customer portal using above credentials after clicking on Portal in the following url : {} Once logged in, you will be able to check account details / balance / call rates / call history and create support tickets. <p> If you have any questions, please contact us through Portal or email us at {} Thank you, Access Number Store '''.format(firstname, lastname, order_number, access_number, destination, card.useralias, card.uipass, portal_url, support_phone_number, support_email)
         email_body_html = '''<html>
                              <head>Order # {} is fulfilled successfully.</head>
                              <body>
                                <p>Hello {} {} </p> <h3>Your Access Number : {} </h3>
                                <h4>Incoming calls to your access number will be delivered to softphone app on your phone {} as requested.</h4>
-                               <p>Please download the below recommended softphone app on to your phone. Once downloaded, CREATE ACCOUNT in the app.</p>
+                               <p>Please download the below recommended softphone app on to your phone.</p>
+                               <p>Once downloaded, CREATE ACCOUNT in the softphone app using your phone number.</p>
+                               <p>Go to 'Settings' --> Click on your account(phone number) -->  Ensure 'Push Notification' is turned ON --> Ensure 'Account enabled' is turned ON </p>
                                  <p>DOWNLOAD LINPHONE FOR IPHONE</p>
                                  <p>https://itunes.apple.com/us/app/linphone/id360065638?mt=8 </p>
                                  <p>DOWNLOAD LINPHONE FOR ANDROID</p>
@@ -159,8 +161,8 @@ def onboarding(country, email, amount, order_number, ticket_id, destination, exp
                                  <p>username : {}</p>
                                  <p>password : {}</p>
                                  <p>You can sign in to customer portal using above credentials after clicking on Portal in the following url : {}</p>
-                                 <p>Once logged in, you will be able to check account details / balance / call rates / call history and create support tickets.</p>
-                                 <p> If you have any questions, please contact us on phone: {} or email us at {}</p>
+                                 <p>Once logged in, you will be able to check account details / balance / call history and create support tickets.</p>
+                                 <p> If you have any questions, please contact us through Portal or email us at {}</p>
                                  <p>Thank you,<br>Access Number Store</p>
                             </body>
                             </html>'''.format(order_number, firstname, lastname, access_number, destination, card.useralias, card.uipass, portal_url, support_phone_number, support_email)
@@ -226,7 +228,71 @@ def onboarding(country, email, amount, order_number, ticket_id, destination, exp
     print("Onboarding Completed Successfully")
     return
 
+# function to buy support Plan
+def buy_supportplan(email, amount, order_number, ticket_id, expiry_date, req_data):
+    country_code = 'BE'
 
+    # step 1 :  check and buy a phone number for a country under Twilio account
+    # Don't hardcode. Load it from Environment variable.
+    account_sid = os.environ.get("TWILIO_ACCOUNT_SID")
+    auth_token = os.environ.get("TWILIO_AUTH_TOKEN")
+    client = Client(account_sid, auth_token)
+
+    numbers = client.available_phone_numbers(country_code).local.list(
+                                                            limit=10
+                                                        )
+    while numbers:
+        available_phone_number = numbers.pop(-1).phone_number
+        stripped_available_phone_number =  available_phone_number.lstrip('+')
+
+        query = Card.select(Card.id).where(Card.username == stripped_available_phone_number)
+        card = query.execute()
+        if not card:
+            account_number = stripped_available_phone_number
+            break
+    print("New Support Access Code " + account_number + " has been selected")
+
+    # *****  create A2B card for that phone number, create DiD, create DidDestination  ******
+    pin = random.randint(1000,9999)
+    passcode = 'ANS' + email + str(pin) + str(order_number)
+
+    firstname = req_data['customer']['default_address']['first_name']
+    lastname = req_data['customer']['default_address']['last_name']
+    address = req_data['customer']['default_address']['address1']
+    city = req_data['customer']['default_address']['city']
+    state = req_data['customer']['default_address']['address2']
+    customer_country = req_data['customer']['default_address']['country']
+    customer_country_code = inv_country_code_dict[customer_country]
+    zipcode = req_data['customer']['default_address']['zip']
+    phone = req_data['customer']['default_address']['phone']
+    #phone = destination
+    company_name = 'support'
+    credit = '9.99'
+    new_credit = float(credit)
+
+    # step 2 : Create Card
+    card = Card.create(username= account_number, useralias= account_number, uipass= passcode, email= email, sip_buddy= 0, lock_pin= pin, country= customer_country_code, expirationdate= expiry_date, enableexpire= '1', firstname= firstname, lastname= lastname, address= address, city= city, state= state, zipcode= zipcode, phone= phone, company_name= company_name, tariff= 'support', voicemail_permitted= 0, voicemail_activated= 0, email_notification= email, notify_email= 0, credit_notification= 0, credit= new_credit)
+    print(card.username)       #
+    add_ticket_comment("Support Access Code - Card created with id: " + str(card.id) + " and username: " + account_number, order_number, ticket_id)
+
+    # step 3 : email customer
+    email_subject = 'Order {} fulfilled successfully'.format(order_number)
+    email_body_text = 'Dear Customer, Greetings from Access Number Store. Order # {} fulfilled successfully. Your Support Access Code : {}'.format(order_number, account_number)
+    email_body_html = """<html>
+    <head>Order # {} fulfilled successfully.</head>
+    <body>
+    <p>Dear Customer,</p>
+    <p>Greetings from Access Number Store. </p>
+    <p>Your Support Access Code: {}</p>
+    <p>You will need to provide this Support Access Code when calling our Support Phone Numbers. </p>
+    <p>Our Support Phone Numbers are listed in the Portal.</p>
+    <p>Thank you for using our service.</p>
+    </body>
+    </html>
+    """.format(order_number, account_number)
+    print("email address is: " + email )
+    send_email(email, email_subject, email_body_text, email_body_html)
+    return
 
 
 # function to add buy topup
@@ -254,11 +320,11 @@ def buy_topup(account_number, email, topup_amount, order_number, ticket_id):
             '''
             msg = Message('Order {} fullfillment - Discrepancy observed - Need more information - Ticket # {}'.format(order_number, str(customer_ticket.id)), recipients=[email, support_email])
             msg.body = 'Our fulfillment team has observed a discrepancy while processing your request.'
-            msg.html = '<p>Hello</p>  <h1>Your Order # {} is being processed.</h1> <p>Our fulfillment team has observed a discrepancy while processing your request.</p>  <h4>Phone number you have requested to top up does not exist in our system.</h4>  <p>Please check the same in your order and please contact our support team via phone: {} or email at {} to update your order.</p> <p>Thank you,<br>Access Number<br>Online Store</p>'.format(order_number, support_phone_number, support_email)
+            msg.html = '<p>Hello</p>  <h1>Your Order # {} is being processed.</h1> <p>Our fulfillment team has observed a discrepancy while processing your request.</p>  <h4>Phone number you have requested to top up does not exist in our system.</h4>  <p>Please check the same in your order and please contact our support team through Portal or email at {} to update your order.</p> <p>Thank you,<br>Access Number<br>Online Store</p>'.format(order_number, support_phone_number, support_email)
             mail.send(msg)
             '''
             email_subject = 'Order # {} fullfillment - Discrepancy observed - Need more information - Ticket # {}'.format(order_number, str(customer_ticket.id))
-            email_body_text = 'Dear Customer, Greetings from Access Number Store. Order # {}. Our fulfillment team has observed a discrepancy while processing your request. Access Number +{} you have requested to top up does not exist in our system. Please check your Access Number from your order and contact our support team via phone: {} or email at {} to update your order. Thank You.'.format(order_number, account_number, support_phone_number, support_email)
+            email_body_text = 'Dear Customer, Greetings from Access Number Store. Order # {}. Our fulfillment team has observed a discrepancy while processing your request. Access Number +{} you have requested to top up does not exist in our system. Please check your Access Number from your order and contact our support team through Portal or email at {} to update your order. Thank You.'.format(order_number, account_number, support_phone_number, support_email)
             email_body_html = """<html>
             <head>Order # {}</head>
             <body>
@@ -266,7 +332,7 @@ def buy_topup(account_number, email, topup_amount, order_number, ticket_id):
               <p>Greetings from Access Number Store. </p>
               <p>Our fulfillment team has observed a discrepancy while processing your request.</p>
               <p> Access Number +{} you have requested to top up does not exist in our system. </p>
-              <p>Please check your Access Number from your order and contact our support team via phone: {} or email at {} to update your order.</p>
+              <p>Please check your Access Number from your order and contact our support team through Portal or email at {} to update your order.</p>
               <p> Thank You.</p>
             </body>
             </html>
@@ -306,7 +372,7 @@ def buy_topup(account_number, email, topup_amount, order_number, ticket_id):
                 #msg = Message('Order {} fulfilled successfully'.format(order_number), recipients=[email])
                 #msg.body = 'Order {} fulfilled.'.format(order_number)
 
-                #msg.html = '''<p>Hello {} {} </p> <h4>Order # {} is fulfilled successfully.</h4> <h4>Your Access Number : {} is topped up with {} GBP</h4> <p>Previous Balance:  {} GBP </p> <p>   </p>  <p>Current Balance:  {} GBP  </p> <p> If you have any questions, please contact us on phone: {} or email us at {}</p> <p>Thank you,<br>Access Number<br>Online Store</p>'''.format(firstname, lastname, order_number, access_number, credit, prev_credit, new_balance, support_phone_number, support_email)
+                #msg.html = '''<p>Hello {} {} </p> <h4>Order # {} is fulfilled successfully.</h4> <h4>Your Access Number : {} is topped up with {} GBP</h4> <p>Previous Balance:  {} GBP </p> <p>   </p>  <p>Current Balance:  {} GBP  </p> <p> If you have any questions, please contact us through Portal or email us at {}</p> <p>Thank you,<br>Access Number<br>Online Store</p>'''.format(firstname, lastname, order_number, access_number, credit, prev_credit, new_balance, support_phone_number, support_email)
                 #mail.send(msg)
                 email_subject = 'Order {} fulfilled successfully'.format(order_number)
                 email_body_text = 'Dear Customer, Greetings from Access Number Store. Order # {} fulfilled successfully. Your Access Number: +{} is topped up with {} GBP.'.format(order_number, account_number, credit)
@@ -450,6 +516,16 @@ def paid_order():
                 amount = product_name['price']
                 print(account_number, product_name['price'], amount)
                 buy_topup(account_number, email, amount, order_number, new_ticket.id)
+            elif 'Support' in product_name['title']:
+                print("Support Plan Purchased")
+                country = product_name['title']
+                email = req_data['email']
+                amount = product_name['price']
+                expiry_in_days = 28
+                expiry_date = str(datetime.datetime.now() + datetime.timedelta(28))
+                result = buy_supportplan(email, amount, order_number, new_ticket.id, expiry_date, req_data)
+                print(result)
+
             else:
                 country = product_name['title']
                 email = req_data['email']
