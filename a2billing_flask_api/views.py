@@ -117,18 +117,18 @@ def onboarding(country, email, amount, order_number, ticket_id, destination, exp
                                     )
         '''
         msg.body = 'Our fulfillment team is currently processing your request. We will email you soon once the order is fulfilled.'
-        msg.html = '<p>Hello {} {} </p> <h1>Your Order # {} is being processed.</h1> <p>Our fulfillment team is currently processing your request.</p>  <p>You will recieve an email soon once the order is fulfilled.</p>  <p>   </p>  <p> If you have any questions, please contact us on email us at {}</p> <p>Thank you,<br>Access Number Store</p>'.format(firstname, lastname, order_number, support_phone_number, support_email)
+        msg.html = '<p>Hello {} {} </p> <h1>Your Order # {} is being processed.</h1> <p>Our fulfillment team is currently processing your request.</p>  <p>You will recieve an email soon once the order is fulfilled.</p>  <p>   </p>  <p> If you have any questions, please contact us on email us at {}</p> <p>Thank you,<br>Access Number Store</p>'.format(firstname, lastname, order_number, support_email)
         mail.send(msg)
         '''
         email_subject = 'Your Order # {} is being processed'.format(order_number)
-        email_body_text = 'Dear Customer, Greetings from Access Number Store. Your Order # {} is being processed. You will recieve an email soon once the order is fulfilled.  If you have any questions meanwhile, please contact us through Portal or email us at {}'.format(order_number, support_phone_number, support_email)
+        email_body_text = 'Dear Customer, Greetings from Access Number Store. Your Order # {} is being processed. You will recieve an email soon once the order is fulfilled.  If you have any questions meanwhile, please contact us through Portal or email us at {}'.format(order_number, support_email)
         email_body_html = """<html>
         <head></head>
         <body>
           <p>'Dear Customer, Greetings from Access Number Store. Your Order # {} is being processed. You will recieve an email soon once the order is fulfilled.  If you have any questions meanwhile, please contact us through Portal or email us at {} </p>'
         </body>
         </html>
-        """.format(order_number, support_phone_number, support_email)
+        """.format(order_number, support_email)
         send_email(email, email_subject, email_body_text, email_body_html)
         add_ticket_comment("Order fullfillment in progress email for username: " + account_number + " sent to customer's email : " + email, order_number, ticket_id)
 
@@ -144,7 +144,7 @@ def onboarding(country, email, amount, order_number, ticket_id, destination, exp
         https://itunes.apple.com/us/app/linphone/id360065638?mt=8
         DOWNLOAD LINPHONE FOR ANDROID
         https://play.google.com/store/apps/details?id=org.linphone&hl=en_GB </p>
-        Your access number account details are provided below username : {} password : {}   You can sign in to customer portal using above credentials after clicking on Portal in the following url : {} Once logged in, you will be able to check account details / balance / call rates / call history and create support tickets. <p> If you have any questions, please contact us through Portal or email us at {} Thank you, Access Number Store '''.format(firstname, lastname, order_number, access_number, destination, card.useralias, card.uipass, portal_url, support_phone_number, support_email)
+        Your access number account details are provided below username : {} password : {}   You can sign in to customer portal using above credentials after clicking on Portal in the following url : {} Once logged in, you will be able to check account details / balance / call rates / call history and create support tickets. <p> If you have any questions, please contact us through Portal or email us at {} Thank you, Access Number Store '''.format(firstname, lastname, order_number, access_number, destination, card.useralias, card.uipass, portal_url, support_email)
         email_body_html = '''<html>
                              <head>Order # {} is fulfilled successfully.</head>
                              <body>
@@ -165,7 +165,7 @@ def onboarding(country, email, amount, order_number, ticket_id, destination, exp
                                  <p> If you have any questions, please contact us through Portal or email us at {}</p>
                                  <p>Thank you,<br>Access Number Store</p>
                             </body>
-                            </html>'''.format(order_number, firstname, lastname, access_number, destination, card.useralias, card.uipass, portal_url, support_phone_number, support_email)
+                            </html>'''.format(order_number, firstname, lastname, access_number, destination, card.useralias, card.uipass, portal_url, support_email)
         send_email(email, email_subject, email_body_text, email_body_html)
 
         add_ticket_comment("Order fullfillment completed email for username: " + account_number + " sent to customer's email : " + str(card.email), order_number, ticket_id)
@@ -320,11 +320,11 @@ def buy_topup(account_number, email, topup_amount, order_number, ticket_id):
             '''
             msg = Message('Order {} fullfillment - Discrepancy observed - Need more information - Ticket # {}'.format(order_number, str(customer_ticket.id)), recipients=[email, support_email])
             msg.body = 'Our fulfillment team has observed a discrepancy while processing your request.'
-            msg.html = '<p>Hello</p>  <h1>Your Order # {} is being processed.</h1> <p>Our fulfillment team has observed a discrepancy while processing your request.</p>  <h4>Phone number you have requested to top up does not exist in our system.</h4>  <p>Please check the same in your order and please contact our support team through Portal or email at {} to update your order.</p> <p>Thank you,<br>Access Number<br>Online Store</p>'.format(order_number, support_phone_number, support_email)
+            msg.html = '<p>Hello</p>  <h1>Your Order # {} is being processed.</h1> <p>Our fulfillment team has observed a discrepancy while processing your request.</p>  <h4>Phone number you have requested to top up does not exist in our system.</h4>  <p>Please check the same in your order and please contact our support team through Portal or email at {} to update your order.</p> <p>Thank you,<br>Access Number<br>Online Store</p>'.format(order_number, support_email)
             mail.send(msg)
             '''
             email_subject = 'Order # {} fullfillment - Discrepancy observed - Need more information - Ticket # {}'.format(order_number, str(customer_ticket.id))
-            email_body_text = 'Dear Customer, Greetings from Access Number Store. Order # {}. Our fulfillment team has observed a discrepancy while processing your request. Access Number +{} you have requested to top up does not exist in our system. Please check your Access Number from your order and contact our support team through Portal or email at {} to update your order. Thank You.'.format(order_number, account_number, support_phone_number, support_email)
+            email_body_text = 'Dear Customer, Greetings from Access Number Store. Order # {}. Our fulfillment team has observed a discrepancy while processing your request. Access Number +{} you have requested to top up does not exist in our system. Please check your Access Number from your order and contact our support team through Portal or email at {} to update your order. Thank You.'.format(order_number, account_number, support_email)
             email_body_html = """<html>
             <head>Order # {}</head>
             <body>
@@ -336,7 +336,7 @@ def buy_topup(account_number, email, topup_amount, order_number, ticket_id):
               <p> Thank You.</p>
             </body>
             </html>
-            """.format(order_number, account_number, support_phone_number, support_email)
+            """.format(order_number, account_number, support_email)
             send_email(email, email_subject, email_body_text, email_body_html)
 
             add_ticket_comment("Order fullfillment - Discrepancy observed - Need more information from username: " + account_number + " sent to customer's email : " + email, order_number, str(customer_ticket.id))
