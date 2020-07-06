@@ -6,7 +6,7 @@ WTForms
 Werkzeug
 aniso8601
 Babel
-docutils
+docutils==0.15
 gunicorn
 itsdangerous
 MarkupSafe
@@ -23,3 +23,10 @@ Flask-Cognito
 twilio
 flask-mail
 boto3
+kalyke-apns
+flask
+Flask-API
+Flask-SQLAlchemy
+py-vapid
+cryptography
+pywebpush
