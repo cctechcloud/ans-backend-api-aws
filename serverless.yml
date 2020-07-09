@@ -1,10 +1,10 @@
-service: adphonev1
+service: adphone
 
 provider:
   name: aws
   runtime: python3.7
   stage: prod
-  region: eu-west-1
+  region: eu-west-2
   memorySize: 512
   environment:
     PORTAL_URL: 'www.accessnumberstore.com'
