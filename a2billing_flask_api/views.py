@@ -25,7 +25,7 @@ from kalyke.payload import PayloadAlert, Payload
 import logging
 import json, os
 from flask import request, Response, render_template, jsonify, Flask
-from pywebpush import webpush, WebPushException
+#from pywebpush import webpush, WebPushException
 
 
 
@@ -42,28 +42,28 @@ shopify_secret_key = shopify_secret_key.encode()
 DER_BASE64_ENCODED_PRIVATE_KEY_FILE_PATH = os.path.join(os.getcwd(),"private_key.txt")
 DER_BASE64_ENCODED_PUBLIC_KEY_FILE_PATH = os.path.join(os.getcwd(),"public_key.txt")
 
-VAPID_PRIVATE_KEY = open(DER_BASE64_ENCODED_PRIVATE_KEY_FILE_PATH, "r+").readline().strip("\n")
-VAPID_PUBLIC_KEY = open(DER_BASE64_ENCODED_PUBLIC_KEY_FILE_PATH, "r+").read().strip("\n")
+# VAPID_PRIVATE_KEY = open(DER_BASE64_ENCODED_PRIVATE_KEY_FILE_PATH, "r+").readline().strip("\n")
+# VAPID_PUBLIC_KEY = open(DER_BASE64_ENCODED_PUBLIC_KEY_FILE_PATH, "r+").read().strip("\n")
 
 VAPID_CLAIMS = {
 "sub": "mailto:grkrishna_mca@yahoo.com"
 }
 
-def send_web_push(subscription_information, message_body):
-    return webpush(
-        subscription_info=subscription_information,
-        data=message_body,
-        vapid_private_key=VAPID_PRIVATE_KEY,
-        vapid_claims=VAPID_CLAIMS
-    )
+# def send_web_push(subscription_information, message_body):
+#     return webpush(
+#         subscription_info=subscription_information,
+#         data=message_body,
+#         vapid_private_key=VAPID_PRIVATE_KEY,
+#         vapid_claims=VAPID_CLAIMS
+#     )
 
 def send_firebase_push(token):
     serverToken = os.environ.get("FIREBASE_SERVER_TOKEN")
     deviceToken = token
     pushNotificationTitle = os.environ.get("PUSH_NOTIFICATION_TITLE")
     pushNotificationBody = os.environ.get("PUSH_NOTIFICATION_BODY")
-    pushClickAction = os.environ.get("PUSH_CLICK_ACTION")
-    pushData = os.environ.get("PUSH_NOTIFICATION_DATA")
+    pushNotificationClickAction = os.environ.get("PUSH_CLICK_ACTION")
+    pushNotificationData = os.environ.get("PUSH_NOTIFICATION_DATA")
 
 
     headers = {
@@ -74,7 +74,7 @@ def send_firebase_push(token):
     body = {
               'notification': {'title': pushNotificationTitle,
                                 'body': pushNotificationBody,
-                                'click_action': pushClickAction
+                                'click_action': pushNotificationClickAction
                                 },
               'to':
                   deviceToken,

@@ -186,7 +186,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/adphonev1/prod/1594071346844-2020-07-06T21:35:46.844Z/adphonev1.zip"
+                "S3Key": "serverless/adphonev1/prod/1594080430274-2020-07-07T00:07:10.274Z/adphonev1.zip"
               },
               "FunctionName": "adphonev1-prod-app",
               "Handler": "wsgi_handler.handler",
@@ -232,14 +232,14 @@
               "IamRoleLambdaExecution"
             ]
           },
-          "AppLambdaVersioncAqFmLD98eRuQj3u9FA5PtUBzWZGckBZz3R8LJhx4": {
+          "AppLambdaVersion8hqGyYfbHBLhMt1JELiCtVF2rE329gS8JuGLtLOS5I": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "AppLambdaFunction"
               },
-              "CodeSha256": "IIICrWyLR+ofB82KvwmEScA+Ge8acFav3YyhQgzQSK0="
+              "CodeSha256": "O00o0q0DbD/zSpZhITTjlbjeir6uu3eFPbKnOVuqIJE="
             }
           },
           "ApiGatewayRestApi": {
@@ -358,7 +358,7 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayDeployment1594071233905": {
+          "ApiGatewayDeployment1594080396222": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -418,7 +418,7 @@
           "AppLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "AppLambdaVersioncAqFmLD98eRuQj3u9FA5PtUBzWZGckBZz3R8LJhx4"
+              "Ref": "AppLambdaVersion8hqGyYfbHBLhMt1JELiCtVF2rE329gS8JuGLtLOS5I"
             }
           },
           "ServiceEndpoint": {
@@ -543,7 +543,7 @@
         "timeout": 6,
         "runtime": "python3.7",
         "vpc": {},
-        "versionLogicalId": "AppLambdaVersioncAqFmLD98eRuQj3u9FA5PtUBzWZGckBZz3R8LJhx4"
+        "versionLogicalId": "AppLambdaVersion8hqGyYfbHBLhMt1JELiCtVF2rE329gS8JuGLtLOS5I"
       }
     },
     "serviceFilename": "serverless.yml",
@@ -552,7 +552,7 @@
     "artifact": "/Users/ramakrishnagurijala/ansmicroservices/backendapi/.serverless/adphonev1.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/adphonev1/prod/1594071346844-2020-07-06T21:35:46.844Z",
+    "artifactDirectoryName": "serverless/adphonev1/prod/1594080430274-2020-07-07T00:07:10.274Z",
     "artifact": "adphonev1.zip"
   }
 }
