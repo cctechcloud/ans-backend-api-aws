@@ -25,8 +25,6 @@ phases:
       - npm install -g serverless
       - npm update -g serverless
 
-      - serverless create --template aws-python3
-
       #install wsgi plugin
       - sls plugin install -n serverless-wsgi
 
@@ -35,7 +33,7 @@ phases:
 
       #install env variables plugin
       - serverless install -u https://github.com/serverless/examples/tree/master/aws-node-env-variables -n  aws-node-env-variables
-
+      - serverless create --template aws-python3
 
   pre_build:
     commands:
