@@ -874,7 +874,7 @@ def homepage():
         else:
             print("Homepage")
     #send_email('sales.accessnumberstore@gmail.com', message)
-    return ('Welcome to Adphone API!', 200)
+    return ('Welcome to Adphone Serverless API!', 200)
 
 
 # Add credit to existing customer
