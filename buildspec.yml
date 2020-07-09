@@ -33,7 +33,7 @@ phases:
 
       #install env variables plugin
       - serverless install -u https://github.com/serverless/examples/tree/master/aws-node-env-variables -n  aws-node-env-variables
-      - serverless create --template aws-python3
+      #- serverless create --template aws-python3
 
   pre_build:
     commands:
@@ -51,7 +51,7 @@ phases:
     commands:
 
       - serverless config credentials --provider aws --key $SLS_KEY --secret $SLS_SECRET
-      - serverless deploy list
+      - serverless deploy
 
       # Use AWS SAM to package the application by using AWS CloudFormation
       - aws cloudformation package --template template.yml --s3-bucket $S3_BUCKET --output-template template-export.yml
