@@ -4,7 +4,7 @@ import datetime
 
 def handler(event, context):
     data = {
-        'output': 'Hello World. Adding Serverless.yaml',
+        'output': 'Hello World. Adding a2billing api files',
         'timestamp': datetime.datetime.utcnow().isoformat()
 
     }
