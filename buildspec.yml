@@ -14,13 +14,18 @@ phases:
     commands:
 
       # Upgrade AWS CLI to the latest version
-      - pip install --upgrade awscli
+      - pip3 install --upgrade awscli
+      - pip3 install -r requirements.txt
+
       # install nodejs and npm
       - yum install nodejs
       - yum install npm
 
       # install serverless here
       - npm install -g serverless
+      - npm update -g serverless
+
+      - serverless create --template aws-python3
 
       #install wsgi plugin
       - sls plugin install -n serverless-wsgi
@@ -59,5 +64,6 @@ phases:
 
 artifacts:
   files:
+    - serverless.yml
     - template-export.yml
     - template-configuration.json

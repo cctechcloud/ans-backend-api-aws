@@ -4,6 +4,17 @@ __pycache__/
 
 AuthKey_8Z2CD246V6.p8
 node_modules/
+aws-node-env-variables/
+package.json
+package-lock.json
+handler.py
+.serverless
+.serverless/
+.vscode
+.venv
+README.*
+Procfile
+
 
 # C extensions
 *.so
