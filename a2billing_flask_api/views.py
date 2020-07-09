@@ -39,7 +39,7 @@ ssmclient = boto3.client('ssm')
 def get_secret(key):
 	resp = ssmclient.get_parameter(
 		Name=key,
-		WithDecryption=True
+		WithDecryption=False
 	)
 	return resp['Parameter']['Value']
 
