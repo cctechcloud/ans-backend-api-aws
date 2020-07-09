@@ -34,9 +34,20 @@ country_code_dict = {"BD": "Bangladesh", "BE": "Belgium", "BF": "Burkina Faso", 
 inv_country_code_dict = {v: k for k, v in country_code_dict.items()}
 
 
+ssmclient = boto3.client('ssm')
+# Function to retrieve parametsrs from AWS SSM Parameter Store
+def get_secret(key):
+	resp = ssmclient.get_parameter(
+		Name=key,
+		WithDecryption=True
+	)
+	return resp['Parameter']['Value']
 
-shopify_secret_key = os.environ.get("SHOPIFY_SECRET_KEY")
+
+#shopify_secret_key = os.environ.get("SHOPIFY_SECRET_KEY")
+shopify_secret_key = get_secret('/ans-backend-api/prod/SHOPIFY_SECRET_KEY')
 shopify_secret_key = shopify_secret_key.encode()
+
 
 
 DER_BASE64_ENCODED_PRIVATE_KEY_FILE_PATH = os.path.join(os.getcwd(),"private_key.txt")
@@ -58,7 +69,8 @@ VAPID_CLAIMS = {
 #     )
 
 def send_firebase_push(token):
-    serverToken = os.environ.get("FIREBASE_SERVER_TOKEN")
+    #serverToken = os.environ.get("FIREBASE_SERVER_TOKEN")
+    serverToken = get_secret('/ans-backend-api/prod/FIREBASE_SERVER_TOKEN')
     deviceToken = token
     pushNotificationTitle = os.environ.get("PUSH_NOTIFICATION_TITLE")
     pushNotificationBody = os.environ.get("PUSH_NOTIFICATION_BODY")
