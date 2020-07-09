@@ -21,7 +21,7 @@ class Configuration(object):
         'name': get_secret('/ans-backend-api/prod/A2B_DB_NAME'),
         'engine': 'peewee.MySQLDatabase',
         'user': get_secret('/ans-backend-api/prod/A2B_DB_USER'),
-        'passwd': get_secret('/ans-backend-api/prod/A2B_DB_PASSWORD),
+        'passwd': get_secret('/ans-backend-api/prod/A2B_DB_PASSWORD'),
     }
 
     DEBUG = True

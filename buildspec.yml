@@ -62,6 +62,5 @@ phases:
 
 artifacts:
   files:
-    - serverless.yml
     - template-export.yml
     - template-configuration.json
