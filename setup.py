@@ -130,7 +130,7 @@ setup(
     install_requires=[
         'setuptools',
         'Jinja2>=2.8',
-        'Flask==0.8'
+        'Flask==1.0'
         # -*- Extra requirements: -*-
     ],
     classifiers=[
