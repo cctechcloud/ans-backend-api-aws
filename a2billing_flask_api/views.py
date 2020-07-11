@@ -76,6 +76,7 @@ def send_firebase_push(token):
     pushNotificationBody = os.environ.get("PUSH_NOTIFICATION_BODY")
     pushNotificationClickAction = os.environ.get("PUSH_CLICK_ACTION")
     pushNotificationData = os.environ.get("PUSH_NOTIFICATION_DATA")
+    print("Click URL is " + pushNotificationClickAction)
 
 
     headers = {
