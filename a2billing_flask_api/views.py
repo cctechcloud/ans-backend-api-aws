@@ -442,6 +442,8 @@ def customer_login():
 
             sip_domain = os.environ.get("SIP_DOMAIN")
             sip_proxy = os.environ.get("SIP_PROXY")
+            print(sip_domain)
+            print(sip_proxy)
 
             # device_type = req_data['devicetype']
             # device_push_token = req_data['devicepushtoken']
@@ -457,7 +459,9 @@ def customer_login():
 
             # Get SIP account details
             sipquery = SipBuddies.select(SipBuddies.username, SipBuddies.secret).where(SipBuddies.username == card[0].phone)
+            print(str(sipquery))
             sipbuddies = sipquery.execute()
+            print(sipbuddies)
 
 
             # prepare dictionary for JSON return

@@ -12,7 +12,7 @@ provider:
     SIP_PROXY: 'sip.accessnumberstore.org'
     PUSH_NOTIFICATION_TITLE: Incoming Call Alert
     PUSH_NOTIFICATION_BODY: Click to open call window
-    PUSH_NOTIFICATION_CLICK_ACTION: https://sip.accessnumberstore.org/
+    PUSH_NOTIFICATION_CLICK_ACTION: https://decaa95cf94c.ngrok.io/#/dashboard/
     PUSH_NOTIFICATION_DATA: None
 
 
