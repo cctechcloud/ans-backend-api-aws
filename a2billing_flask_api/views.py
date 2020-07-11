@@ -125,7 +125,7 @@ def subscription():
             headers={"Access-Control-Allow-Origin": "*"}, content_type="application/json")
 
     subscription_token = request.get_json("subscription_token")
-    return Response(status=201, mimetype="application/json")
+    return Response(status=201, headers={"Access-Control-Allow-Origin": "*"}, mimetype="application/json")
 
 # sending the WebPush
 @app.route("/v1/adphone/customer/push_v1/",methods=['POST'])
@@ -393,6 +393,7 @@ def customer_webpushtoken():
 
         resp = jsonify(message)
         resp.status_code = 200
+        response.headers.add("Access-Control-Allow-Origin", "*")
         resp.mimetype = 'application/json'
         return resp
 
