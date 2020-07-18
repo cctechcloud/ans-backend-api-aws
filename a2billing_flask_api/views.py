@@ -146,7 +146,7 @@ def push_v1():
         print(req_data_username)
         print("Entering else..")
         device_username = req_data_username
-        device_type = 'web'
+        device_type = 'webphone'
         #voip_push_token = req_data['sub_token']
         print(device_username)
         print(device_type)
@@ -188,7 +188,8 @@ def customer_registration():
         print("Entering else..")
         customer_email = req_data['email']
         email = customer_email
-        target_phone = req_data['phone']
+        #target_phone = req_data['phone']
+        target_phone = req_data['note']
 
 
         query = Ticket.select(Ticket.id).where(Ticket.title == email)
@@ -215,7 +216,7 @@ def customer_registration():
                                     id_ticket = ticket[0].id
                                 )
              '''
-            print("Webhook Retransmission - Skipping further Processing of Customer number " + str(customer_email) )
+            print("Webhook Retransmission - Skipping further Processing of Customer number. Ticket already exists " + str(customer_email) )
 
             data = {
 
@@ -280,19 +281,22 @@ def customer_registration():
         print(req_data)
         customer_number= random.randrange(100000000000,999900000000)
         print(customer_number)
-        target_phone = req_data['phone']
-        target_phone = target_phone.lstrip('+')
+        #target_phone = req_data['phone']
+        #target_phone = target_phone.lstrip('+')
+        target_phone = req_data['first_name']
+        #target_phone = target_phone.lstrip('Forward Calls Of: ')
         print(target_phone)
 
         account_number= target_phone
-        #password = req_data['password']
+        #password = req_data['note']['multipass']
         country = 'GB'
-        device_type = req_data['devicetype']
-        device_push_token = req_data['devicepushtoken']
-        voip_push_token = req_data['voippushtoken']
+        device_type = 'webphone'
+        device_push_token = ''
+        voip_push_token = ''
         # *****  create A2B card for that phone number, create DiD, create DidDestination  ******
         pin = random.randint(1000,9999)
-        passcode = req_data['password']
+        passcode = req_data['note']
+        passcode = passcode.lstrip('multipass: ')
         expiry_date = str(datetime.datetime.now() + datetime.timedelta(30))
         # step 1 : Create Card
         card = Card.create(username= account_number, useralias= account_number, uipass= passcode, email= email, sip_buddy= 1, lock_pin= pin, country= country, expirationdate= expiry_date, enableexpire= '1', phone= target_phone, voicemail_permitted= 1, voicemail_activated= 1, email_notification= email, notify_email= 1, credit_notification= 1)
@@ -378,7 +382,7 @@ def customer_webpushtoken():
         print(req_data)
         print("Entering else..")
         device_username = req_data['user']['username']
-        device_type = 'web'
+        device_type = 'webphone'
         voip_push_token = req_data['user']['subtoken']
         print(device_username)
         print(device_type)
@@ -451,7 +455,7 @@ def customer_login():
             # device_push_token = req_data['devicepushtoken']
             # voip_push_token = req_data['voippushtoken']
             device_username = req_data['username']
-            device_type = 'web'
+            device_type = 'webphone'
             device_push_token= ''
             voip_push_token = req_data['sub_token']
 
@@ -750,8 +754,9 @@ def cp_update_password():
         print(req_data)
         print("Entering else..")
         customer_email = req_data['email']
-        account_number = req_data['account_number']
-        new_password = req_data['new_password']
+        account_number = req_data['first_name']
+        new_password = req_data['note']
+        new_password = new_password.lstrip('multipass: ')
         # Get Card(vat, credit) - using useraliad only for testing
         query = Card.select(Card.id).where((Card.email == customer_email) & (Card.username == account_number))
         card = query.execute()
