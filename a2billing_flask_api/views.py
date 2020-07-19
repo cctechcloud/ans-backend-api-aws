@@ -284,6 +284,7 @@ def customer_registration():
         #target_phone = req_data['phone']
         #target_phone = target_phone.lstrip('+')
         target_phone = req_data['first_name']
+        target_phone = target_phone.lstrip('+')
         #target_phone = target_phone.lstrip('Forward Calls Of: ')
         print(target_phone)
 
