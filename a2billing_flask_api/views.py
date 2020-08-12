@@ -25,6 +25,7 @@ from kalyke.payload import PayloadAlert, Payload
 import logging
 import json, os
 from flask import request, Response, render_template, jsonify, Flask
+import hashlib
 #from pywebpush import webpush, WebPushException
 
 
@@ -59,6 +60,17 @@ DER_BASE64_ENCODED_PUBLIC_KEY_FILE_PATH = os.path.join(os.getcwd(),"public_key.t
 VAPID_CLAIMS = {
 "sub": "mailto:grkrishna_mca@yahoo.com"
 }
+
+# Function to MD5 hash the password
+def hash_pwd(password):
+    # initializing string
+    str2hash = password
+
+    # encoding GeeksforGeeks using encode() then sending to md5()
+    result = hashlib.md5(str2hash.encode())
+
+    return result.hexdigest()
+
 
 # def send_web_push(subscription_information, message_body):
 #     return webpush(
@@ -298,6 +310,7 @@ def customer_registration():
         pin = random.randint(1000,9999)
         passcode = req_data['note']
         passcode = passcode.lstrip('multipass: ')
+        passcode = hash_pwd(passcode)
         expiry_date = str(datetime.datetime.now() + datetime.timedelta(30))
         # step 1 : Create Card
         card = Card.create(username= account_number, useralias= account_number, uipass= passcode, email= email, sip_buddy= 1, lock_pin= pin, country= country, expirationdate= expiry_date, enableexpire= '1', phone= target_phone, voicemail_permitted= 1, voicemail_activated= 1, email_notification= email, notify_email= 1, credit_notification= 1)
