@@ -291,16 +291,17 @@ def customer_registration():
 
         req_data = json.loads(data.decode('utf-8'))
         print(req_data)
-        customer_number= random.randrange(100000000000,999900000000)
+        #customer_number= random.randrange(100000000000,999900000000)
+        customer_number = req_data['id']
         print(customer_number)
         #target_phone = req_data['phone']
         #target_phone = target_phone.lstrip('+')
-        target_phone = req_data['first_name']
+        #target_phone = req_data['first_name']
+        target_phone = target_phone.lstrip('Forward Calls From: ')
         target_phone = target_phone.lstrip('+')
-        #target_phone = target_phone.lstrip('Forward Calls Of: ')
         print(target_phone)
 
-        account_number= target_phone
+        account_number= customer_number
         #password = req_data['note']['multipass']
         country = 'GB'
         device_type = 'webphone'
@@ -308,18 +309,20 @@ def customer_registration():
         voip_push_token = ''
         # *****  create A2B card for that phone number, create DiD, create DidDestination  ******
         pin = random.randint(1000,9999)
-        passcode = req_data['note']
-        passcode = passcode.lstrip('multipass: ')
+        passcode = req_data['email'] + str(pin)
+        #passcode = passcode.lstrip('multipass: ')
         passcode = hash_pwd(passcode)
-        expiry_date = str(datetime.datetime.now() + datetime.timedelta(30))
+        #expiry_date = str(datetime.datetime.now() + datetime.timedelta(30))
         # step 1 : Create Card
-        card = Card.create(username= account_number, useralias= account_number, uipass= passcode, email= email, sip_buddy= 1, lock_pin= pin, country= country, expirationdate= expiry_date, enableexpire= '1', phone= target_phone, voicemail_permitted= 1, voicemail_activated= 1, email_notification= email, notify_email= 1, credit_notification= 1)
-        sipbuddy = SipBuddies.create(username= target_phone, accountcode= target_phone, name = target_phone, secret= passcode, id_cc_card= Card.id, context= 'a2billing', regexten= '', callerid= target_phone, fromuser= '', fromdomain= '', host= '', insecure= '', mailbox= '', md5secret= '', deny= '', mask= '', allow= '', musiconhold= '', fullcontact= '', usereqphone= device_type, useragent= device_push_token, setvar= voip_push_token)
+        card = Card.create(username= customer_number, useralias= customer_number, uipass= passcode, email= email, sip_buddy= 1, lock_pin= pin, country= country, enableexpire= '1', phone= target_phone, voicemail_permitted= 1, voicemail_activated= 1, email_notification= email, notify_email= 1, credit_notification= 1, credit=1.0)
+
+
+        sipbuddy = SipBuddies.create(username= target_phone, accountcode= target_phone, name = target_phone, secret= passcode, id_cc_card= card.id, context= 'a2billing', regexten= '', callerid= target_phone, fromuser= '', fromdomain= '', host= '', insecure= '', mailbox= '', md5secret= '', deny= '', mask= '', allow= '', musiconhold= '', fullcontact= '', usereqphone= device_type, useragent= device_push_token, setvar= voip_push_token)
         # step 2 :  create a DID in a2billing
         did = Did.create(
-                            id_cc_didgroup= target_phone,
+                            id_cc_didgroup= customer_number,
                             did= target_phone,
-                            iduser= Card.id,
+                            iduser= card.id,
                             selling_rate= 0.00,
                             max_concurrent= 2,
                             startingdate= str(datetime.datetime.now()),
@@ -414,6 +417,8 @@ def customer_webpushtoken():
         response.headers.add("Access-Control-Allow-Origin", "*")
         resp.mimetype = 'application/json'
         return resp
+
+
 
 # Customer Login
 @app.route('/v1/adphone/customer/login/', methods=['POST'])
@@ -514,6 +519,159 @@ def customer_login():
             print(resp)
             return resp
 
+
+# Customer Account Main page after login
+@app.route('/v1/adphone/customer/details', methods=['GET', 'POST'])
+# ***** function to create free trial user account ******
+def customer_details():
+    data = request.get_data()
+    header = dict(request.headers)
+    #verified = verify_webhook(data, request.headers.get('X-Shopify-Hmac-Sha256'))
+    if 2==1:
+        abort(404)
+    else:
+        print("Entering else..")
+        customer_email = request.args.get('email')
+        print(customer_email)
+        customer_password = ""
+        # Get Card(vat, credit) - using useraliad only for testing
+        query = Card.select(Card.id).where(Card.email == customer_email)
+        print(query)
+        card = query.execute()
+
+        if not card:
+            data = {
+
+            }
+
+            message = {
+                    'success': 0,
+                    'status': 401,
+                    'message': 'Invalid Login Details',
+                    'customer': data
+            }
+
+            resp = jsonify(message)
+            resp.status_code = 200
+            resp.mimetype = 'application/json'
+            print(resp)
+            return resp
+
+        else:
+            query = Card.select(Card.id, Card.credit, Card.firstname, Card.lastname, Card.phone, Card.username, Card.phone, Card.email, Card.useralias).where(Card.email == customer_email)
+            card = query.execute()
+            print(card[0].id)
+
+            sip_domain = "SIP_DOMAIN"
+            sip_proxy = "SIP_PROXY"
+            print(sip_domain)
+            print(sip_proxy)
+
+
+            # Get SIP account details
+            sipquery = SipBuddies.select(SipBuddies.username, SipBuddies.secret).where(SipBuddies.id_cc_card == card[0].id)
+            print(str(sipquery))
+            sipbuddies = sipquery.execute()
+            print(sipbuddies)
+
+            # Get DID details
+            print("card id is ", str(card[0].id))
+            didquery = Did.select(Did.id, Did.did).where(Did.iduser == card[0].id)
+            print(str(didquery))
+            dids = didquery.execute()
+            print("dids is ", str(dids[0].id))
+
+            diddestinationquery = DidDestination.select(DidDestination.destination).where((DidDestination.id_cc_card == card[0].id) & (DidDestination.id_cc_did == dids[0].id))
+            print(str(diddestinationquery))
+            diddest = diddestinationquery.execute()
+            print(dids)
+            print(diddest[0].destination)
+
+
+            # prepare dictionary for JSON return
+            data = {
+                'account_number': card[0].username,
+                'current_balance': card[0].credit,
+                'email': card[0].email,
+                'phone': card[0].phone,
+                'first_name': card[0].firstname,
+                'last_name': card[0].lastname,
+                'country': card[0].country,
+                'sip_username': sipbuddies[0].username,
+                'sip_secret': sipbuddies[0].secret,
+                'sip_domain': sip_domain,
+                'sip_proxy': sip_proxy,
+                'expiry_date': card[0].expirationdate,
+                'did': dids[0].did,
+                'did_id': dids[0].id,
+                'diddestination': diddest[0].destination
+
+            }
+
+            message = {
+                        'success': 1,
+                        'status': 200,
+                        'message': 'Logged in',
+                        'customer': data
+            }
+
+            resp = jsonify(message)
+            resp.status_code = 200
+            resp.mimetype = 'application/json'
+            print(resp)
+            return resp
+
+
+# Save DID - Customer Phone Number 
+@app.route('/v1/adphone/customer/save/fromphone', methods=['GET', 'POST'])
+# ***** function to create free trial user account ******
+def save_customer_fromphone():
+    data = request.get_data()
+    header = dict(request.headers)
+    #verified = verify_webhook(data, request.headers.get('X-Shopify-Hmac-Sha256'))
+    if 2==1:
+        abort(404)
+    else:
+        req_data = json.loads(data.decode('utf-8'))
+        print(req_data)
+        print("Entering else..")
+        updated_from_number = req_data['Account']['ufn']
+        id_from_number = req_data['Account']['idfn']
+        print(updated_from_number, id_from_number)
+
+        #customer_email = request.args.get('email')
+        #customer_account_number = request.args.get('accnum')
+        #updated_from_number = request.args.get('ufn')
+        #id_from_number = request.args.get('idfn')
+        
+
+        Did.update(did=updated_from_number).where(Did.id == id_from_number).execute()
+      
+
+        # Get DID details
+        didquery = Did.select(Did.id, Did.did).where(Did.id == id_from_number)
+        print(str(didquery))
+        dids = didquery.execute()
+        print("dids is ", str(dids[0].id))
+
+        # prepare dictionary for JSON return
+        data = {
+                'did': dids[0].did,
+                'did_id': dids[0].id
+        }
+
+        message = {
+                        'success': 1,
+                        'status': 200,
+                        'message': 'Fetching DID',
+                        'customer': data
+        }
+
+        resp = jsonify(message)
+        resp.status_code = 200
+        resp.mimetype = 'application/json'
+        print(resp)
+        return resp
 
 # Add credit to existing customer
 @app.route('/v1/adphone/credit/add/', methods=['POST'])
